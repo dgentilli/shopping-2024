@@ -4,6 +4,7 @@ import CreateAccountScreenUI from '../CreateAccountScreen/CreateAccountScreenUI'
 import VerifyEmailScreenUI from '../VerifyEmailScreen/VerifyEmailScreenUI';
 import SelectHouseholdScreenUI from '../SelectHouseholdScreen/SelectHouseholdScreenUI';
 import SignupSuccessScreenUI from '../SignupSuccessScreen/SignupSuccessScreenUI';
+import CreateAccountScreenContainer from '../CreateAccountScreen/CreateAccountScreenContainer';
 
 interface SignupScreenProps {
   step: SignupStep;
@@ -11,7 +12,7 @@ interface SignupScreenProps {
 
 const SignupScreenUI = (props: SignupScreenProps) => {
   const { step } = props;
-  console.log('step from contorller', step);
+  console.log('step from signup ui', step);
 
   // sign up flow
   // screen 1: choose signup method Google or Username / password
@@ -28,7 +29,7 @@ const SignupScreenUI = (props: SignupScreenProps) => {
 
   switch (step) {
     case SignupStep.CREATE_ACCOUNT:
-      return <CreateAccountScreenUI />;
+      return <CreateAccountScreenContainer />;
     case SignupStep.VERIFY_EMAIL:
       return <VerifyEmailScreenUI />;
     case SignupStep.SELECT_HOUSEHOLD:
@@ -36,7 +37,7 @@ const SignupScreenUI = (props: SignupScreenProps) => {
     case SignupStep.SIGNUP_SUCCESS:
       return <SignupSuccessScreenUI />;
     default:
-      return <CreateAccountScreenUI />;
+      return <CreateAccountScreenContainer />;
   }
 };
 
