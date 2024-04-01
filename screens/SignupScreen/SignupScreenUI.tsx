@@ -8,10 +8,11 @@ import CreateAccountScreenContainer from '../CreateAccountScreen/CreateAccountSc
 
 interface SignupScreenProps {
   step: SignupStep;
+  setStep: () => void;
 }
 
 const SignupScreenUI = (props: SignupScreenProps) => {
-  const { step } = props;
+  const { step, setStep } = props;
   console.log('step from signup ui', step);
 
   // sign up flow
@@ -29,15 +30,15 @@ const SignupScreenUI = (props: SignupScreenProps) => {
 
   switch (step) {
     case SignupStep.CREATE_ACCOUNT:
-      return <CreateAccountScreenContainer />;
+      return <CreateAccountScreenContainer setStep={setStep} />;
     case SignupStep.VERIFY_EMAIL:
-      return <VerifyEmailScreenUI />;
+      return <VerifyEmailScreenUI setStep={setStep} />;
     case SignupStep.SELECT_HOUSEHOLD:
-      return <SelectHouseholdScreenUI />;
+      return <SelectHouseholdScreenUI setStep={setStep} />;
     case SignupStep.SIGNUP_SUCCESS:
-      return <SignupSuccessScreenUI />;
+      return <SignupSuccessScreenUI setStep={setStep} />;
     default:
-      return <CreateAccountScreenContainer />;
+      return <CreateAccountScreenContainer setStep={setStep} />;
   }
 };
 
