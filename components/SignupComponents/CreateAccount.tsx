@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
 import { SignupStep } from '../../constants/signup';
+import Button from '../Button';
+import { ButtonTypes } from '../../constants/buttonTypes';
 
 interface CreateAccountScreenProps {
   setStep: (step: SignupStep) => void;
@@ -31,12 +33,11 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
 
       <View style={styles.breaker} />
 
-      <Pressable
-        style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }, styles.button]}
+      <Button
+        type={ButtonTypes.PRIMARY}
+        title='Next'
         onPress={() => setStep(SignupStep.VERIFY_EMAIL)}
-      >
-        <Text style={styles.buttonText}>Next</Text>
-      </Pressable>
+      />
     </View>
   );
 };
@@ -70,18 +71,6 @@ const styles = StyleSheet.create({
   breaker: {
     height: 75,
     width: '100%',
-  },
-  button: {
-    height: 75,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#6c63ff',
-    borderRadius: 6,
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontSize: 20,
   },
 });
 
