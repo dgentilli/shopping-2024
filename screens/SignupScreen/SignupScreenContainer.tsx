@@ -6,7 +6,6 @@ const MemoizedSignupScreenUI = React.memo(SignupScreenUI);
 
 const SignupScreenContainer = () => {
   const { step, setStep } = useSignupLogic();
-
   return <MemoizedSignupScreenUI step={step} setStep={setStep} />;
 };
 

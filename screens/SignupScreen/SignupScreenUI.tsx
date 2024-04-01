@@ -1,14 +1,12 @@
-import { View, Text } from 'react-native';
-import { SignupStep } from '../../../constants/signup';
-import CreateAccountScreenUI from '../CreateAccountScreen/CreateAccountScreenUI';
-import VerifyEmailScreenUI from '../VerifyEmailScreen/VerifyEmailScreenUI';
-import SelectHouseholdScreenUI from '../SelectHouseholdScreen/SelectHouseholdScreenUI';
-import SignupSuccessScreenUI from '../SignupSuccessScreen/SignupSuccessScreenUI';
-import CreateAccountScreenContainer from '../CreateAccountScreen/CreateAccountScreenContainer';
+import { SignupStep } from '../../constants/signup';
+import CreateAccount from '../../components/SignupComponents/CreateAccount';
+import VerifyEmail from '../../components/SignupComponents/VerifyEmail';
+import SelectHousehold from '../../components/SignupComponents/SelectHouseHold';
+import SignupSuccess from '../../components/SignupComponents/SignupSuccess';
 
 interface SignupScreenProps {
   step: SignupStep;
-  setStep: () => void;
+  setStep: (step: SignupStep) => void;
 }
 
 const SignupScreenUI = (props: SignupScreenProps) => {
@@ -30,15 +28,15 @@ const SignupScreenUI = (props: SignupScreenProps) => {
 
   switch (step) {
     case SignupStep.CREATE_ACCOUNT:
-      return <CreateAccountScreenContainer setStep={setStep} />;
+      return <CreateAccount setStep={setStep} />;
     case SignupStep.VERIFY_EMAIL:
-      return <VerifyEmailScreenUI setStep={setStep} />;
+      return <VerifyEmail setStep={setStep} />;
     case SignupStep.SELECT_HOUSEHOLD:
-      return <SelectHouseholdScreenUI setStep={setStep} />;
+      return <SelectHousehold setStep={setStep} />;
     case SignupStep.SIGNUP_SUCCESS:
-      return <SignupSuccessScreenUI setStep={setStep} />;
+      return <SignupSuccess setStep={setStep} />;
     default:
-      return <CreateAccountScreenContainer setStep={setStep} />;
+      return <CreateAccount setStep={setStep} />;
   }
 };
 
