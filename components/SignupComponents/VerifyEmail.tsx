@@ -1,6 +1,6 @@
-import { View, Text } from 'react-native';
 import { SignupStep } from '../../constants/signup';
 import Button from '../Button';
+import ScreenWrapper from '../../baseComponents/ScreenWrapper';
 import { ButtonTypes } from '../../constants/buttonTypes';
 
 interface VerifyEmailScreenProps {
@@ -11,14 +11,13 @@ const VerifyEmail = (props: VerifyEmailScreenProps) => {
   const { setStep } = props;
 
   return (
-    <View>
-      <Text>VerifyEmailScreenUI</Text>
+    <ScreenWrapper title='Verify Email'>
       <Button
         type={ButtonTypes.PRIMARY}
-        title='Next'
+        title='Open Email App'
         onPress={() => setStep(SignupStep.SELECT_HOUSEHOLD)}
       />
-    </View>
+    </ScreenWrapper>
   );
 };
 

@@ -1,5 +1,7 @@
-import { View, Text } from 'react-native';
 import { SignupStep } from '../../constants/signup';
+import ScreenWrapper from '../../baseComponents/ScreenWrapper';
+import Button from '../Button';
+import { ButtonTypes } from '../../constants/buttonTypes';
 
 interface SignupSuccessProps {
   setStep: (step: SignupStep) => void;
@@ -9,9 +11,13 @@ const SignupSuccess = (props: SignupSuccessProps) => {
   const { setStep } = props;
 
   return (
-    <View>
-      <Text>SignupSuccess</Text>
-    </View>
+    <ScreenWrapper title='Success! Account Created!'>
+      <Button
+        type={ButtonTypes.PRIMARY}
+        title='Get Started'
+        onPress={() => {}}
+      />
+    </ScreenWrapper>
   );
 };
 
