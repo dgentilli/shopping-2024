@@ -1,9 +1,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import GroceriesScreenUI from './screens/GroceriesScreen/GroceriesScreenUI';
-import PharmacyScreenUI from './screens/PharmacyScreen/PharmacyScreenUI';
-import SettingsScreenUI from './screens/SettingsScreen/SettingsScreenUI';
+import GroceriesScreenUI from '../screens/GroceriesScreen/GroceriesScreenUI';
+import PharmacyScreenUI from '../screens/PharmacyScreen/PharmacyScreenUI';
+import SettingsScreenUI from '../screens/SettingsScreen/SettingsScreenUI';
 
 const Tab = createBottomTabNavigator();
 
