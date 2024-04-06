@@ -1,7 +1,6 @@
 import { SignupStep } from '../../constants/signup';
-import Button from '../Button';
-import { ButtonTypes } from '../../constants/buttonTypes';
 import ScreenWrapper from '../../baseComponents/ScreenWrapper';
+import { Text, View } from 'react-native';
 
 interface SelectHouseholdProps {
   setStep: (step: SignupStep) => void;
@@ -11,12 +10,14 @@ const SelectHousehold = (props: SelectHouseholdProps) => {
   const { setStep } = props;
 
   return (
-    <ScreenWrapper title='Select Household'>
-      <Button
-        type={ButtonTypes.PRIMARY}
-        title='Next'
-        onPress={() => setStep(SignupStep.SIGNUP_SUCCESS)}
-      />
+    <ScreenWrapper
+      title='Select Household'
+      ctaTitle='Next'
+      ctaCallback={() => setStep(SignupStep.SIGNUP_SUCCESS)}
+    >
+      <View>
+        <Text>UI Elements Go Here</Text>
+      </View>
     </ScreenWrapper>
   );
 };

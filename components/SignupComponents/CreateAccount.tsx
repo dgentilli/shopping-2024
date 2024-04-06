@@ -15,7 +15,11 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
   const [email, setEmail] = useState('');
 
   return (
-    <ScreenWrapper title='Create Account'>
+    <ScreenWrapper
+      title='Create Account'
+      ctaTitle='Next'
+      ctaCallback={() => setStep(SignupStep.VERIFY_EMAIL)}
+    >
       <Text style={styles.label}>Enter your email address</Text>
 
       <TextInput
@@ -27,14 +31,6 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
         autoCapitalize='none'
         autoCorrect={false}
         onChangeText={(input) => setEmail(input)}
-      />
-
-      <Spacer height={75} />
-
-      <Button
-        type={ButtonTypes.PRIMARY}
-        title='Next'
-        onPress={() => setStep(SignupStep.VERIFY_EMAIL)}
       />
     </ScreenWrapper>
   );

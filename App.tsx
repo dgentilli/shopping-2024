@@ -2,6 +2,7 @@ import MainNavigator from './navigation/MainNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import { useState } from 'react';
 import AuthNavigator from './navigation/AuthNavigator';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 type UserObject = {
   id: string;
@@ -13,7 +14,9 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {user ? <MainNavigator /> : <AuthNavigator />}
+      <SafeAreaProvider>
+        {user ? <MainNavigator /> : <AuthNavigator />}
+      </SafeAreaProvider>
     </NavigationContainer>
   );
 }
