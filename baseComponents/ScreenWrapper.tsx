@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Animated, StyleSheet, Text, View } from 'react-native';
 import Spacer from './Spacer';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ButtonTypes } from '../constants/buttonTypes';
 import Button from '../components/Button';
+import { useEffect, useRef } from 'react';
 interface ScreenWrapperProps {
   title: string;
   children: any;
@@ -12,9 +13,22 @@ interface ScreenWrapperProps {
 
 const ScreenWrapper = (props: ScreenWrapperProps) => {
   const { title, children, ctaCallback, ctaTitle } = props;
+  const fadeAnim = useRef(new Animated.Value(0.8)).current;
+
+  const fadeIn = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  useEffect(() => {
+    fadeIn();
+  }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
       <Text style={styles.title}>{title}</Text>
 
       <Spacer height={100} />
@@ -28,7 +42,7 @@ const ScreenWrapper = (props: ScreenWrapperProps) => {
           onPress={ctaCallback}
         />
       </View>
-    </SafeAreaView>
+    </Animated.View>
   );
 };
 
