@@ -13,22 +13,28 @@ interface ScreenWrapperProps {
 
 const ScreenWrapper = (props: ScreenWrapperProps) => {
   const { title, children, ctaCallback, ctaTitle } = props;
-  const fadeAnim = useRef(new Animated.Value(0.8)).current;
 
-  const fadeIn = () => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 500,
+  const translateX = new Animated.Value(500);
+
+  const slideIn = () => {
+    Animated.spring(translateX, {
+      toValue: 0,
       useNativeDriver: true,
+      bounciness: 2,
+      speed: 10,
     }).start();
   };
 
   useEffect(() => {
-    fadeIn();
-  }, []);
+    slideIn();
+  }, [title]);
+
+  const interpolatedStyle = {
+    transform: [{ translateX }],
+  };
 
   return (
-    <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
+    <Animated.View style={[styles.container, interpolatedStyle]}>
       <Text style={styles.title}>{title}</Text>
 
       <Spacer height={100} />
