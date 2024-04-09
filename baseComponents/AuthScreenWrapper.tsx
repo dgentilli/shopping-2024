@@ -1,17 +1,17 @@
 import { Animated, StyleSheet, Text, View } from 'react-native';
 import Spacer from './Spacer';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ButtonTypes } from '../constants/buttonTypes';
 import Button from '../components/Button';
-import { useEffect, useRef } from 'react';
-interface ScreenWrapperProps {
+import { useEffect } from 'react';
+
+interface AuthScreenWrapperProps {
   title: string;
   children: any;
   ctaTitle: string;
   ctaCallback: () => void;
 }
 
-const ScreenWrapper = (props: ScreenWrapperProps) => {
+const AuthScreenWrapper = (props: AuthScreenWrapperProps) => {
   const { title, children, ctaCallback, ctaTitle } = props;
 
   const translateX = new Animated.Value(500);
@@ -25,13 +25,13 @@ const ScreenWrapper = (props: ScreenWrapperProps) => {
     }).start();
   };
 
-  useEffect(() => {
-    slideIn();
-  }, [title]);
-
   const interpolatedStyle = {
     transform: [{ translateX }],
   };
+
+  useEffect(() => {
+    slideIn();
+  }, [title]);
 
   return (
     <Animated.View style={[styles.container, interpolatedStyle]}>
@@ -72,4 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ScreenWrapper;
+export default AuthScreenWrapper;

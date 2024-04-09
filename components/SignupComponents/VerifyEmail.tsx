@@ -1,6 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { SignupStep } from '../../constants/signup';
-import ScreenWrapper from '../../baseComponents/ScreenWrapper';
+import AuthScreenWrapper from '../../baseComponents/AuthScreenWrapper';
 import { StyleSheet, Text, View } from 'react-native';
 import Spacer from '../../baseComponents/Spacer';
 
@@ -47,11 +47,11 @@ const VerifyEmail = (props: VerifyEmailScreenProps) => {
   };
 
   return (
-    <ScreenWrapper title='Verify Email' {...getButtonProps()}>
+    <AuthScreenWrapper title='Verify Email' {...getButtonProps()}>
       <View style={styles.verificationStatusWrapper}>
         {renderStatusElements()}
       </View>
-    </ScreenWrapper>
+    </AuthScreenWrapper>
   );
 };
 

@@ -1,5 +1,5 @@
 import { SignupStep } from '../../constants/signup';
-import ScreenWrapper from '../../baseComponents/ScreenWrapper';
+import AuthScreenWrapper from '../../baseComponents/AuthScreenWrapper';
 import { Text, View } from 'react-native';
 
 interface SignupSuccessProps {
@@ -10,7 +10,7 @@ const SignupSuccess = (props: SignupSuccessProps) => {
   const { setStep } = props;
 
   return (
-    <ScreenWrapper
+    <AuthScreenWrapper
       title='Success! Account Created!'
       ctaTitle='Get Started'
       ctaCallback={() => {}}
@@ -18,7 +18,7 @@ const SignupSuccess = (props: SignupSuccessProps) => {
       <View>
         <Text>UI Elements Go Here</Text>
       </View>
-    </ScreenWrapper>
+    </AuthScreenWrapper>
   );
 };
 

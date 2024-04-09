@@ -1,5 +1,5 @@
 import { SignupStep } from '../../constants/signup';
-import ScreenWrapper from '../../baseComponents/ScreenWrapper';
+import AuthScreenWrapper from '../../baseComponents/AuthScreenWrapper';
 import { Text, View } from 'react-native';
 
 interface SelectHouseholdProps {
@@ -10,7 +10,7 @@ const SelectHousehold = (props: SelectHouseholdProps) => {
   const { setStep } = props;
 
   return (
-    <ScreenWrapper
+    <AuthScreenWrapper
       title='Select Household'
       ctaTitle='Next'
       ctaCallback={() => setStep(SignupStep.SIGNUP_SUCCESS)}
@@ -18,7 +18,7 @@ const SelectHousehold = (props: SelectHouseholdProps) => {
       <View>
         <Text>UI Elements Go Here</Text>
       </View>
-    </ScreenWrapper>
+    </AuthScreenWrapper>
   );
 };
 

@@ -1,10 +1,7 @@
 import { useState } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { Text, TextInput, StyleSheet } from 'react-native';
 import { SignupStep } from '../../constants/signup';
-import Button from '../Button';
-import ScreenWrapper from '../../baseComponents/ScreenWrapper';
-import Spacer from '../../baseComponents/Spacer';
-import { ButtonTypes } from '../../constants/buttonTypes';
+import AuthScreenWrapper from '../../baseComponents/AuthScreenWrapper';
 
 interface CreateAccountScreenProps {
   setStep: (step: SignupStep) => void;
@@ -15,7 +12,7 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
   const [email, setEmail] = useState('');
 
   return (
-    <ScreenWrapper
+    <AuthScreenWrapper
       title='Create Account'
       ctaTitle='Next'
       ctaCallback={() => setStep(SignupStep.VERIFY_EMAIL)}
@@ -32,7 +29,7 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
         autoCorrect={false}
         onChangeText={(input) => setEmail(input)}
       />
-    </ScreenWrapper>
+    </AuthScreenWrapper>
   );
 };
 
