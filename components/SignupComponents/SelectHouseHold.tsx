@@ -3,6 +3,7 @@ import AuthScreenWrapper from '../../baseComponents/AuthScreenWrapper';
 import { StyleSheet, Text, TextInput } from 'react-native';
 import { useState } from 'react';
 import Spacer from '../../baseComponents/Spacer';
+import ParagraphText from '../../baseComponents/ParagraphText';
 
 interface SelectHouseholdProps {
   setStep: (step: SignupStep) => void;
@@ -36,13 +37,11 @@ const SelectHousehold = (props: SelectHouseholdProps) => {
 
       <Spacer height={30} />
 
-      <Text style={styles.paragraphText}>
-        If you don't have a code, don't worry.
-      </Text>
+      <ParagraphText>If you don't have a code, don't worry.</ParagraphText>
 
-      <Text style={styles.paragraphText}>
+      <ParagraphText>
         Just press Next to create your own new household
-      </Text>
+      </ParagraphText>
     </AuthScreenWrapper>
   );
 };
@@ -65,11 +64,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     padding: 10,
     textAlign: 'center',
-  },
-  paragraphText: {
-    color: '#2f2e41',
-    fontSize: 16,
-    lineHeight: 24,
   },
 });
 
