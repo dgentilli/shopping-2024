@@ -22,7 +22,7 @@ const SignupScreenUI = (props: SignupScreenProps) => {
       case SignupStep.SELECT_HOUSEHOLD:
         return <SelectHousehold setStep={setStep} />;
       case SignupStep.SIGNUP_SUCCESS:
-        return <SignupSuccess setStep={setStep} />;
+        return <SignupSuccess />;
       default:
         return <CreateAccount setStep={setStep} />;
     }
