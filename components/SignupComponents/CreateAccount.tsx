@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Text, TextInput, StyleSheet } from 'react-native';
 import { SignupStep } from '../../constants/signup';
 import AuthScreenWrapper from '../../baseComponents/AuthScreenWrapper';
+import Spacer from '../../baseComponents/Spacer';
 
 interface CreateAccountScreenProps {
   setStep: (step: SignupStep) => void;
@@ -10,6 +11,7 @@ interface CreateAccountScreenProps {
 const CreateAccount = (props: CreateAccountScreenProps) => {
   const { setStep } = props;
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <AuthScreenWrapper
@@ -28,6 +30,21 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
         autoCapitalize='none'
         autoCorrect={false}
         onChangeText={(input) => setEmail(input)}
+      />
+
+      <Spacer height={50} />
+
+      <Text style={styles.label}>Enter a password</Text>
+
+      <TextInput
+        style={styles.input}
+        value={password}
+        placeholder='Password'
+        placeholderTextColor='#3f3d56'
+        secureTextEntry
+        autoCapitalize='none'
+        autoCorrect={false}
+        onChangeText={(input) => setPassword(input)}
       />
     </AuthScreenWrapper>
   );
