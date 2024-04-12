@@ -1,8 +1,8 @@
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, Keyboard, StyleSheet, Text, View } from 'react-native';
 import Spacer from './Spacer';
 import { ButtonTypes } from '../constants/buttonTypes';
 import Button from '../components/Button';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface AuthScreenWrapperProps {
   title: string;
@@ -13,7 +13,10 @@ interface AuthScreenWrapperProps {
 
 const AuthScreenWrapper = (props: AuthScreenWrapperProps) => {
   const { title, children, ctaCallback, ctaTitle } = props;
-
+  const [buttonPosition, setButtonPosition] = useState({
+    position: 'absolute',
+    bottom: 100,
+  });
   const translateX = new Animated.Value(500);
 
   const slideIn = () => {
@@ -30,6 +33,20 @@ const AuthScreenWrapper = (props: AuthScreenWrapperProps) => {
   };
 
   useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setButtonPosition({ position: 'absolute', bottom: -500 });
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setButtonPosition({ position: 'absolute', bottom: 100 });
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
+  useEffect(() => {
     slideIn();
   }, [title]);
 
@@ -41,7 +58,7 @@ const AuthScreenWrapper = (props: AuthScreenWrapperProps) => {
 
       {children}
 
-      <View style={styles.buttonWrapper}>
+      <View style={[styles.buttonWrapper, { ...buttonPosition }]}>
         <Button
           type={ButtonTypes.PRIMARY}
           title={ctaTitle}
@@ -66,8 +83,6 @@ const styles = StyleSheet.create({
     color: '#2f2e41',
   },
   buttonWrapper: {
-    position: 'absolute',
-    bottom: 100,
     width: '100%',
   },
 });
