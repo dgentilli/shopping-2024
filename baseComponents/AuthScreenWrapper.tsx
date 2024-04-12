@@ -1,8 +1,9 @@
-import { Animated, Keyboard, StyleSheet, Text, View } from 'react-native';
+import { useEffect } from 'react';
+import { Animated, StyleSheet, Text, View } from 'react-native';
 import Spacer from './Spacer';
-import { ButtonTypes } from '../constants/buttonTypes';
 import Button from '../components/Button';
-import { useEffect, useState } from 'react';
+import { ButtonTypes } from '../constants/buttonTypes';
+import { useKeyboardState } from '../hooks/useKeyboardState';
 
 interface AuthScreenWrapperProps {
   title: string;
@@ -13,11 +14,17 @@ interface AuthScreenWrapperProps {
 
 const AuthScreenWrapper = (props: AuthScreenWrapperProps) => {
   const { title, children, ctaCallback, ctaTitle } = props;
-  const [buttonPosition, setButtonPosition] = useState({
-    position: 'absolute',
-    bottom: 100,
-  });
+  const { isKeyboardVisible } = useKeyboardState();
   const translateX = new Animated.Value(500);
+
+  const getButtonPosition = (): {
+    position: 'absolute' | 'relative' | undefined;
+    bottom: number;
+  } => {
+    return isKeyboardVisible
+      ? { position: 'absolute', bottom: -500 }
+      : { position: 'absolute', bottom: 100 };
+  };
 
   const slideIn = () => {
     Animated.spring(translateX, {
@@ -33,20 +40,6 @@ const AuthScreenWrapper = (props: AuthScreenWrapperProps) => {
   };
 
   useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      setButtonPosition({ position: 'absolute', bottom: -500 });
-    });
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      setButtonPosition({ position: 'absolute', bottom: 100 });
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
-
-  useEffect(() => {
     slideIn();
   }, [title]);
 
@@ -58,7 +51,7 @@ const AuthScreenWrapper = (props: AuthScreenWrapperProps) => {
 
       {children}
 
-      <View style={[styles.buttonWrapper, { ...buttonPosition }]}>
+      <View style={[styles.buttonWrapper, getButtonPosition()]}>
         <Button
           type={ButtonTypes.PRIMARY}
           title={ctaTitle}

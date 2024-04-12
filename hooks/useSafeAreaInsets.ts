@@ -1,6 +1,6 @@
 import { useSafeAreaInsets as useRNSareAreaInsets } from 'react-native-safe-area-context';
 
-const useSafeAreaInsets = () => {
+export const useSafeAreaInsets = () => {
   const {
     top: topInset,
     bottom: bottomInset,
@@ -15,5 +15,3 @@ const useSafeAreaInsets = () => {
     rightInset,
   };
 };
-
-export default useSafeAreaInsets;
