@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
 import Spacer from './Spacer';
-import Button from '../components/Button';
+import Button from './Button';
 import { ButtonTypes } from '../constants/buttonTypes';
 import { useKeyboardState } from '../hooks/useKeyboardState';
 
