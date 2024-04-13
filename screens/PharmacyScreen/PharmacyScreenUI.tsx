@@ -1,9 +1,12 @@
 import { View, Text } from 'react-native';
+import { ListItemType } from '../../constants/listItemType';
 
-interface PharmacyScreenProps {}
+interface PharmacyScreenProps {
+  data: ListItemType[];
+}
 
 const PharmacyScreenUI = (props: PharmacyScreenProps) => {
-  const {} = props;
+  const { id, itemName, itemQuantity, isChecked } = props;
 
   return (
     <View>

@@ -1,13 +1,17 @@
 import { View, Text } from 'react-native';
+import List from '../../components/ListComponents/List';
+import { ListItemType } from '../../constants/listItemType';
 
-interface GroceriesScreenProps {}
+interface GroceriesScreenProps {
+  data: ListItemType[];
+}
 
 const GroceriesScreenUI = (props: GroceriesScreenProps) => {
-  const {} = props;
+  const { data } = props;
 
   return (
     <View>
-      <Text>GroceriesScreenUI</Text>
+      <List data={data} />
     </View>
   );
 };
