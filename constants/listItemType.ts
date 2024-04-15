@@ -3,4 +3,5 @@ export interface ListItemType {
   itemName: string;
   itemQuantity: number;
   isChecked: boolean;
+  type: 'grocery' | 'pharmacy';
 }

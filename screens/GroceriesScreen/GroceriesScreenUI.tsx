@@ -4,14 +4,15 @@ import { ListItemType } from '../../constants/listItemType';
 
 interface GroceriesScreenProps {
   data: ListItemType[];
+  deleteItem: (id: string, type: 'grocery' | 'pharmacy') => void;
 }
 
 const GroceriesScreenUI = (props: GroceriesScreenProps) => {
-  const { data } = props;
+  const { data, deleteItem } = props;
 
   return (
     <View>
-      <List data={data} />
+      <List data={data} deleteItem={deleteItem} />
     </View>
   );
 };

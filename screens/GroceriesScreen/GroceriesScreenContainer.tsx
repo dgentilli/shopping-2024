@@ -8,7 +8,14 @@ const MemoizedGroceriesScreenUI = React.memo(GroceriesScreenUI);
 const GroceriesScreenContainer = () => {
   const data: ListItemType[] = groceriesMockData;
 
-  return <MemoizedGroceriesScreenUI data={data} />;
+  const deleteItem = (id: string, type: 'grocery' | 'pharmacy') => {
+    // You'll need to make an API call eventually
+    // For now...
+    console.log('id recd by deleteItem function', id);
+    console.log('type recd by deleteItem function', type);
+  };
+
+  return <MemoizedGroceriesScreenUI data={data} deleteItem={deleteItem} />;
 };
 
 export default GroceriesScreenContainer;

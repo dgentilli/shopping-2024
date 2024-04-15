@@ -5,18 +5,18 @@ import EmptyList from '../../baseComponents/EmptyList';
 
 interface ListProps {
   data: ListItemType[];
+  deleteItem: (id: string, type: 'grocery' | 'pharmacy') => void;
 }
 
 const List = (props: ListProps) => {
-  // const { data } = props;
-  const data = [];
+  const { data, deleteItem } = props;
 
   const Divider = () => <View style={styles.itemSeparator} />;
 
   return (
     <FlatList
       data={data}
-      renderItem={({ item }) => <ListItem {...item} />}
+      renderItem={({ item }) => <ListItem {...item} deleteItem={deleteItem} />}
       ItemSeparatorComponent={() => <Divider />}
       ListEmptyComponent={() => <EmptyList />}
       style={{ height: '100%', backgroundColor: '#ffffff' }}
