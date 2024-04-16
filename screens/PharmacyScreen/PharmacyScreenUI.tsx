@@ -1,16 +1,18 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { ListItemType } from '../../constants/listItemType';
+import List from '../../components/ListComponents/List';
 
 interface PharmacyScreenProps {
   data: ListItemType[];
+  deleteItem: (id: string, type: 'grocery' | 'pharmacy') => void;
 }
 
 const PharmacyScreenUI = (props: PharmacyScreenProps) => {
-  const { id, itemName, itemQuantity, isChecked } = props;
+  const { data, deleteItem } = props;
 
   return (
     <View>
-      <Text>PharmacyScreenUI</Text>
+      <List data={data} deleteItem={deleteItem} />
     </View>
   );
 };

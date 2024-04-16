@@ -10,6 +10,7 @@ const ListItem = (props: ListItemProps) => {
 
   return (
     <Pressable
+      key={id}
       style={({ pressed }) => [
         { opacity: pressed ? 0.5 : 1 },
         styles.listItemWrapper,

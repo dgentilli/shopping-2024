@@ -8,7 +8,14 @@ const MemoizedPharmacyScreenUI = React.memo(PharmacyScreenUI);
 const PharmacyScreenContainer = () => {
   const data: ListItemType[] = pharmacyMockData;
 
-  return <MemoizedPharmacyScreenUI data={data} />;
+  const deleteItem = (id: string, type: 'grocery' | 'pharmacy') => {
+    // You'll need to make an API call eventually
+    // For now...
+    console.log('id recd by deleteItem function', id);
+    console.log('type recd by deleteItem function', type);
+  };
+
+  return <MemoizedPharmacyScreenUI data={data} deleteItem={deleteItem} />;
 };
 
 export default PharmacyScreenContainer;
