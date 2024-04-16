@@ -14,13 +14,18 @@ const List = (props: ListProps) => {
   const Divider = () => <View style={styles.itemSeparator} />;
 
   return (
-    <FlatList
-      data={data}
-      renderItem={({ item }) => <ListItem {...item} deleteItem={deleteItem} />}
-      ItemSeparatorComponent={() => <Divider />}
-      ListEmptyComponent={() => <EmptyList />}
-      style={{ height: '100%', backgroundColor: '#ffffff' }}
-    />
+    <View style={{ flex: 1 }}>
+      <FlatList
+        data={data}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <ListItem {...item} deleteItem={deleteItem} />
+        )}
+        ItemSeparatorComponent={() => <Divider />}
+        ListEmptyComponent={() => <EmptyList />}
+        style={{ backgroundColor: '#ffffff' }}
+      />
+    </View>
   );
 };
 

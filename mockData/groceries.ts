@@ -49,4 +49,32 @@ export const groceriesMockData: ListItemType[] = [
     isChecked: false,
     type: 'grocery',
   },
+  {
+    id: '7',
+    itemName: 'Corn',
+    itemQuantity: 5,
+    isChecked: false,
+    type: 'grocery',
+  },
+  {
+    id: '8',
+    itemName: 'Beef',
+    itemQuantity: 5,
+    isChecked: false,
+    type: 'grocery',
+  },
+  {
+    id: '9',
+    itemName: 'Ice Cream',
+    itemQuantity: 5,
+    isChecked: false,
+    type: 'grocery',
+  },
+  {
+    id: '10',
+    itemName: 'End of List',
+    itemQuantity: 100,
+    isChecked: false,
+    type: 'grocery',
+  },
 ];

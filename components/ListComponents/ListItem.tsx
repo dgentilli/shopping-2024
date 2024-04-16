@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 65,
-    paddingHorizontal: 40,
+    paddingHorizontal: 20,
   },
   textStyle: {
     fontSize: 20,
