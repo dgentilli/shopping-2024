@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { Text, TextInput, StyleSheet } from 'react-native';
 import { SignupStep } from '../../constants/signup';
 import AuthScreenWrapper from '../../baseComponents/AuthScreenWrapper';
@@ -12,12 +13,33 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
   const { setStep } = props;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  console.log('email from createAccount', email);
+  console.log('password from create account', password);
+
+  const auth = getAuth();
+
+  const onPressCtaButton = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        console.log('user from createUserWithEmailAndPassword', user);
+        setStep(SignupStep.VERIFY_EMAIL);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log('errorCode from signup', errorCode);
+        console.log('errorMessage from signup', errorMessage);
+        // ..
+      });
+  };
 
   return (
     <AuthScreenWrapper
       title='Create Account'
       ctaTitle='Next'
-      ctaCallback={() => setStep(SignupStep.VERIFY_EMAIL)}
+      ctaCallback={onPressCtaButton}
     >
       <Text style={styles.label}>Enter your email address</Text>
 
