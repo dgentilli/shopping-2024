@@ -4,7 +4,8 @@ import { Text, TextInput, StyleSheet } from 'react-native';
 import { SignupStep } from '../../constants/signup';
 import AuthScreenWrapper from '../../baseComponents/AuthScreenWrapper';
 import Spacer from '../../baseComponents/Spacer';
-
+import Link from '../../baseComponents/Link';
+import { useNavigation } from '@react-navigation/native';
 interface CreateAccountScreenProps {
   setStep: (step: SignupStep) => void;
 }
@@ -13,6 +14,8 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
   const { setStep } = props;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation<any>();
+  // To Do: Set up the TS for the navigation
   console.log('email from createAccount', email);
   console.log('password from create account', password);
 
@@ -67,6 +70,13 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
         autoCapitalize='none'
         autoCorrect={false}
         onChangeText={(input) => setPassword(input)}
+      />
+
+      <Spacer height={25} />
+
+      <Link
+        text='Already Signed Up?'
+        onPress={() => navigation.navigate('Signin')}
       />
     </AuthScreenWrapper>
   );
