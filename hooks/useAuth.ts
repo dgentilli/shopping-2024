@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   User,
+  sendEmailVerification,
 } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 
@@ -20,6 +21,16 @@ const useAuth = () => {
     return unsubscribe;
   }, []);
 
+  const sendVerificationEmail = async (user: User) => {
+    try {
+      await sendEmailVerification(user);
+      console.log('Verification email sent to:', user.email);
+    } catch (error) {
+      console.error('Error sending verification email:', error);
+      // Handle error appropriately (e.g., display message to user)
+    }
+  };
+
   const signupWithEmailAndPassword = async (
     email: string,
     password: string
@@ -28,6 +39,7 @@ const useAuth = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log('user from createUserWithEmailAndPassword', user);
+        sendEmailVerification(user);
       })
       .catch((error) => {
         const errorCode = error.code;
