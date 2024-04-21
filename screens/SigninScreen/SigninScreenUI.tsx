@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { Text, TextInput, StyleSheet } from 'react-native';
 import AuthScreenWrapper from '../../baseComponents/AuthScreenWrapper';
 import Spacer from '../../baseComponents/Spacer';
 import Link from '../../baseComponents/Link';
@@ -24,7 +24,7 @@ const SigninScreenUI = (props: SigninScreenProps) => {
 
   return (
     <AuthScreenWrapper
-      title='Create Account'
+      title='Sign In'
       ctaTitle='Sign in'
       ctaCallback={onPressCtaButton}
     >

@@ -1,33 +1,31 @@
-import React, { useState } from 'react';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
 import SigninScreenUI from './SigninScreenUI';
 import { useNavigation } from '@react-navigation/native';
+import useAuth from '../../hooks/useAuth';
 const MemoizedSignupScreenUI = React.memo(SigninScreenUI);
 
 const SigninScreenContainer = () => {
+  const { signinWithEmailAndPassword, currentUser } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation<any>();
   // To Do: Add TS to the navigation
-  const auth = getAuth();
-
   const onPressLink = () => {
     navigation.navigate('Signup');
   };
 
   const onPressCtaButton = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log('user from Sign in', user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log('signin errorCode', errorCode);
-        console.log('signing errorMessage', errorMessage);
-      });
+    try {
+      signinWithEmailAndPassword(email, password);
+    } catch (error) {
+      console.log('error from signin screen', error);
+    }
   };
+
+  useEffect(() => {
+    // To Do: implement the logic for switching to the Main Navigator
+    console.log('currentUser from signin', currentUser);
+  }, []);
 
   return (
     <MemoizedSignupScreenUI

@@ -1,17 +1,18 @@
-import { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { useEffect, useState } from 'react';
 import { Text, TextInput, StyleSheet } from 'react-native';
 import { SignupStep } from '../../constants/signup';
 import AuthScreenWrapper from '../../baseComponents/AuthScreenWrapper';
 import Spacer from '../../baseComponents/Spacer';
 import Link from '../../baseComponents/Link';
 import { useNavigation } from '@react-navigation/native';
+import useAuth from '../../hooks/useAuth';
 interface CreateAccountScreenProps {
   setStep: (step: SignupStep) => void;
 }
 
 const CreateAccount = (props: CreateAccountScreenProps) => {
   const { setStep } = props;
+  const { signupWithEmailAndPassword, currentUser } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation<any>();
@@ -19,23 +20,19 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
   console.log('email from createAccount', email);
   console.log('password from create account', password);
 
-  const auth = getAuth();
+  useEffect(() => {
+    console.log('currentUser from createAccount', currentUser);
+    if (currentUser) {
+      setStep(SignupStep.VERIFY_EMAIL);
+    }
+  }, [currentUser]);
 
-  const onPressCtaButton = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        console.log('user from createUserWithEmailAndPassword', user);
-        setStep(SignupStep.VERIFY_EMAIL);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log('errorCode from signup', errorCode);
-        console.log('errorMessage from signup', errorMessage);
-        // ..
-      });
+  const onPressCtaButton = async () => {
+    try {
+      signupWithEmailAndPassword(email, password);
+    } catch (error) {
+      console.log('error from signup');
+    }
   };
 
   return (
