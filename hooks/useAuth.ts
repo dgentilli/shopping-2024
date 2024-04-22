@@ -39,7 +39,7 @@ const useAuth = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log('user from createUserWithEmailAndPassword', user);
-        sendEmailVerification(user);
+        sendVerificationEmail(user);
       })
       .catch((error) => {
         const errorCode = error.code;
