@@ -4,13 +4,19 @@ import SignupScreenUI from './SignupScreenUI';
 import useAuth from '../../hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
 import { SignupStep } from '../../constants/signup';
+import useAppState from '../../hooks/useAppState';
 
 const MemoizedSignupScreenUI = React.memo(SignupScreenUI);
 
 const SignupScreenContainer = () => {
   const { step, setStep } = useSignupLogic();
-  const { currentUser, isEmailVerified, signupWithEmailAndPassword } =
-    useAuth();
+  const {
+    currentUser,
+    isEmailVerified,
+    signupWithEmailAndPassword,
+    checkEmailVerificationStatus,
+  } = useAuth();
+  const { currentAppState, onForeground } = useAppState();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation<any>();
@@ -24,11 +30,19 @@ const SignupScreenContainer = () => {
   };
 
   useEffect(() => {
-    console.log('currentUser from createAccount', currentUser);
     if (step === SignupStep.CREATE_ACCOUNT && Boolean(currentUser)) {
       setStep(SignupStep.VERIFY_EMAIL);
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    const handleForeground = () => {
+      checkEmailVerificationStatus();
+    };
+    const unsubscribe = onForeground(handleForeground);
+
+    return () => unsubscribe;
+  }, [currentAppState]);
 
   return (
     <MemoizedSignupScreenUI
