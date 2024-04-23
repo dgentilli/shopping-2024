@@ -12,10 +12,12 @@ import { useEffect, useState } from 'react';
 const useAuth = () => {
   const auth = getAuth();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+      setIsEmailVerified(Boolean(user?.emailVerified));
     });
 
     return unsubscribe;
@@ -73,6 +75,7 @@ const useAuth = () => {
 
   return {
     currentUser,
+    isEmailVerified,
     signupWithEmailAndPassword,
     signinWithEmailAndPassword,
     logout,

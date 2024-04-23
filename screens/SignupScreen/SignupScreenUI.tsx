@@ -7,24 +7,57 @@ import { View } from 'react-native';
 
 interface SignupScreenProps {
   step: SignupStep;
+  email: string;
+  password: string;
+  isEmailVerified: boolean;
+  setEmail: (input: string) => void;
+  setPassword: (input: string) => void;
   setStep: (step: SignupStep) => void;
+  onPressCreateAccount: () => void;
 }
 
 const SignupScreenUI = (props: SignupScreenProps) => {
-  const { step, setStep } = props;
+  const {
+    step,
+    email,
+    password,
+    isEmailVerified,
+    setStep,
+    setEmail,
+    setPassword,
+    onPressCreateAccount,
+  } = props;
 
   const renderScreen = () => {
     switch (step) {
       case SignupStep.CREATE_ACCOUNT:
-        return <CreateAccount setStep={setStep} />;
+        return (
+          <CreateAccount
+            email={email}
+            password={password}
+            setEmail={setEmail}
+            setPassword={setPassword}
+            onPressCreateAccount={onPressCreateAccount}
+          />
+        );
       case SignupStep.VERIFY_EMAIL:
-        return <VerifyEmail setStep={setStep} />;
+        return (
+          <VerifyEmail isEmailVerified={isEmailVerified} setStep={setStep} />
+        );
       case SignupStep.SELECT_HOUSEHOLD:
         return <SelectHousehold setStep={setStep} />;
       case SignupStep.SIGNUP_SUCCESS:
         return <SignupSuccess />;
       default:
-        return <CreateAccount setStep={setStep} />;
+        return (
+          <CreateAccount
+            email={email}
+            password={password}
+            setEmail={setEmail}
+            setPassword={setPassword}
+            onPressCreateAccount={onPressCreateAccount}
+          />
+        );
     }
   };
 

@@ -5,15 +5,15 @@ import { StyleSheet, Text, View } from 'react-native';
 import Spacer from '../../baseComponents/Spacer';
 
 interface VerifyEmailScreenProps {
+  isEmailVerified: boolean;
   setStep: (step: SignupStep) => void;
 }
 
 const VerifyEmail = (props: VerifyEmailScreenProps) => {
-  const { setStep } = props;
-  const isVerified = true;
+  const { isEmailVerified, setStep } = props;
 
   const renderStatusElements = () => {
-    if (isVerified) {
+    if (isEmailVerified) {
       return (
         <>
           <Ionicons name='checkmark-circle' size={64} color={'green'} />
@@ -34,7 +34,7 @@ const VerifyEmail = (props: VerifyEmailScreenProps) => {
   };
 
   const getButtonProps = () => {
-    if (isVerified) {
+    if (isEmailVerified) {
       return {
         ctaTitle: 'Next',
         ctaCallback: () => setStep(SignupStep.SELECT_HOUSEHOLD),

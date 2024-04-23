@@ -7,39 +7,24 @@ import Link from '../../baseComponents/Link';
 import { useNavigation } from '@react-navigation/native';
 import useAuth from '../../hooks/useAuth';
 interface CreateAccountScreenProps {
-  setStep: (step: SignupStep) => void;
+  email: string;
+  password: string;
+  setEmail: (input: string) => void;
+  setPassword: (input: string) => void;
+  onPressCreateAccount: () => void;
 }
 
 const CreateAccount = (props: CreateAccountScreenProps) => {
-  const { setStep } = props;
-  const { signupWithEmailAndPassword, currentUser } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { email, password, onPressCreateAccount, setEmail, setPassword } =
+    props;
   const navigation = useNavigation<any>();
   // To Do: Set up the TS for the navigation
-  console.log('email from createAccount', email);
-  console.log('password from create account', password);
-
-  useEffect(() => {
-    console.log('currentUser from createAccount', currentUser);
-    if (currentUser) {
-      setStep(SignupStep.VERIFY_EMAIL);
-    }
-  }, [currentUser]);
-
-  const onPressCtaButton = async () => {
-    try {
-      signupWithEmailAndPassword(email, password);
-    } catch (error) {
-      console.log('error from signup');
-    }
-  };
 
   return (
     <AuthScreenWrapper
       title='Create Account'
       ctaTitle='Next'
-      ctaCallback={onPressCtaButton}
+      ctaCallback={onPressCreateAccount}
     >
       <Text style={styles.label}>Enter your email address</Text>
 
