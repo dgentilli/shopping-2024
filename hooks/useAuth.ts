@@ -16,6 +16,7 @@ const useAuth = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log('user from authState listener', user);
       setCurrentUser(user);
       setIsEmailVerified(Boolean(user?.emailVerified));
     });
@@ -69,6 +70,14 @@ const useAuth = () => {
       });
   };
 
+  const checkEmailVerificationStatus = () => {
+    currentUser?.reload().then((user) => {
+      if (currentUser?.emailVerified) {
+        setIsEmailVerified(true);
+      }
+    });
+  };
+
   const logout = async () => {
     signOut(auth);
   };
@@ -78,6 +87,7 @@ const useAuth = () => {
     isEmailVerified,
     signupWithEmailAndPassword,
     signinWithEmailAndPassword,
+    checkEmailVerificationStatus,
     logout,
   };
 };
