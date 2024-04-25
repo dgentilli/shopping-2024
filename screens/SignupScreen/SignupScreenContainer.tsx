@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { openInbox } from 'react-native-email-link';
 import { useSignupLogic } from './SignupScreenLogic';
 import SignupScreenUI from './SignupScreenUI';
 import useAuth from '../../hooks/useAuth';
@@ -19,6 +20,7 @@ const SignupScreenContainer = () => {
   const { currentAppState, onForeground } = useAppState();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [openEmailError, setOpenEmailError] = useState<unknown>('');
   const navigation = useNavigation<any>();
 
   const onPressCreateAccount = async () => {
@@ -27,6 +29,10 @@ const SignupScreenContainer = () => {
     } catch (error) {
       console.log('error from signup');
     }
+  };
+
+  const openEmailApp = () => {
+    openInbox();
   };
 
   useEffect(() => {
@@ -50,10 +56,12 @@ const SignupScreenContainer = () => {
       email={email}
       password={password}
       isEmailVerified={isEmailVerified}
+      openEmailError={openEmailError}
       setStep={setStep}
       setEmail={setEmail}
       setPassword={setPassword}
       onPressCreateAccount={onPressCreateAccount}
+      openEmailApp={openEmailApp}
     />
   );
 };

@@ -6159,6 +6159,11 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
+react-native-email-link@^1.16.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.16.0.tgz#fb3cf8a30396ae6bac7e0dc73a28a87e0a5b59b6"
+  integrity sha512-Ic6G6bi5TyoyWWB37oFbbR/TDWLkfSQHwd9+u35u3DqcJeyKtJcU/joDTiGQ7IzNLzJdamTKsL/ak9z36LQS0A==
+
 react-native-gesture-handler@~2.14.0:
   version "2.14.1"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.14.1.tgz#930640231024b7921435ab476aa501dd4a6b2e01"

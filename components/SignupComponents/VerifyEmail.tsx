@@ -6,11 +6,13 @@ import Spacer from '../../baseComponents/Spacer';
 
 interface VerifyEmailScreenProps {
   isEmailVerified: boolean;
+  openEmailError: unknown;
   setStep: (step: SignupStep) => void;
+  openEmailApp: () => void;
 }
 
 const VerifyEmail = (props: VerifyEmailScreenProps) => {
-  const { isEmailVerified, setStep } = props;
+  const { isEmailVerified, openEmailError, setStep, openEmailApp } = props;
 
   const renderStatusElements = () => {
     if (isEmailVerified) {
@@ -42,7 +44,7 @@ const VerifyEmail = (props: VerifyEmailScreenProps) => {
     }
     return {
       ctaTitle: 'Open Email App',
-      ctaCallback: () => {},
+      ctaCallback: () => openEmailApp(),
     };
   };
 

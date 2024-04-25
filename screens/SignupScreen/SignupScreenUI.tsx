@@ -10,10 +10,12 @@ interface SignupScreenProps {
   email: string;
   password: string;
   isEmailVerified: boolean;
+  openEmailError: unknown;
   setEmail: (input: string) => void;
   setPassword: (input: string) => void;
   setStep: (step: SignupStep) => void;
   onPressCreateAccount: () => void;
+  openEmailApp: () => void;
 }
 
 const SignupScreenUI = (props: SignupScreenProps) => {
@@ -22,10 +24,12 @@ const SignupScreenUI = (props: SignupScreenProps) => {
     email,
     password,
     isEmailVerified,
+    openEmailError,
     setStep,
     setEmail,
     setPassword,
     onPressCreateAccount,
+    openEmailApp,
   } = props;
 
   const renderScreen = () => {
@@ -42,7 +46,12 @@ const SignupScreenUI = (props: SignupScreenProps) => {
         );
       case SignupStep.VERIFY_EMAIL:
         return (
-          <VerifyEmail isEmailVerified={isEmailVerified} setStep={setStep} />
+          <VerifyEmail
+            isEmailVerified={isEmailVerified}
+            openEmailError={openEmailError}
+            setStep={setStep}
+            openEmailApp={openEmailApp}
+          />
         );
       case SignupStep.SELECT_HOUSEHOLD:
         return <SelectHousehold setStep={setStep} />;
