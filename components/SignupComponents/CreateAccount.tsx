@@ -31,6 +31,7 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
       <TextInput
         style={styles.input}
         value={email}
+        inputMode='email'
         keyboardType='email-address'
         placeholder='Email Address'
         placeholderTextColor='#3f3d56'
