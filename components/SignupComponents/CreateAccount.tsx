@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
 import { Text, TextInput, StyleSheet } from 'react-native';
-import { SignupStep } from '../../constants/signup';
 import AuthScreenWrapper from '../../baseComponents/AuthScreenWrapper';
 import Spacer from '../../baseComponents/Spacer';
 import Link from '../../baseComponents/Link';
@@ -9,14 +7,23 @@ import useAuth from '../../hooks/useAuth';
 interface CreateAccountScreenProps {
   email: string;
   password: string;
+  emailError: string;
   setEmail: (input: string) => void;
   setPassword: (input: string) => void;
   onPressCreateAccount: () => void;
+  validateEmailField: (email: string) => void;
 }
 
 const CreateAccount = (props: CreateAccountScreenProps) => {
-  const { email, password, onPressCreateAccount, setEmail, setPassword } =
-    props;
+  const {
+    email,
+    password,
+    emailError,
+    onPressCreateAccount,
+    setEmail,
+    setPassword,
+    validateEmailField,
+  } = props;
   const navigation = useNavigation<any>();
   // To Do: Set up the TS for the navigation
 
@@ -38,7 +45,10 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
         autoCapitalize='none'
         autoCorrect={false}
         onChangeText={(input) => setEmail(input)}
+        onEndEditing={(event) => validateEmailField(event.nativeEvent.text)}
       />
+
+      <Text>{emailError}</Text>
 
       <Spacer height={50} />
 

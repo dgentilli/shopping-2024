@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { openInbox } from 'react-native-email-link';
 import { useSignupLogic } from './SignupScreenLogic';
 import SignupScreenUI from './SignupScreenUI';
 import useAuth from '../../hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
 import { SignupStep } from '../../constants/signup';
 import useAppState from '../../hooks/useAppState';
+import Validator from '../../services/Validator';
 
 const MemoizedSignupScreenUI = React.memo(SignupScreenUI);
 
@@ -19,8 +19,8 @@ const SignupScreenContainer = () => {
   } = useAuth();
   const { currentAppState, onForeground } = useAppState();
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
-  const [openEmailError, setOpenEmailError] = useState<unknown>('');
   const navigation = useNavigation<any>();
 
   const onPressCreateAccount = async () => {
@@ -31,8 +31,8 @@ const SignupScreenContainer = () => {
     }
   };
 
-  const openEmailApp = () => {
-    openInbox();
+  const validateEmailField = (email: string) => {
+    setEmailError(Validator.validateEmailAddress(email));
   };
 
   useEffect(() => {
@@ -56,12 +56,12 @@ const SignupScreenContainer = () => {
       email={email}
       password={password}
       isEmailVerified={isEmailVerified}
-      openEmailError={openEmailError}
+      emailError={emailError}
       setStep={setStep}
       setEmail={setEmail}
       setPassword={setPassword}
       onPressCreateAccount={onPressCreateAccount}
-      openEmailApp={openEmailApp}
+      validateEmailField={validateEmailField}
     />
   );
 };

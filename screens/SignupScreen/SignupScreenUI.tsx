@@ -10,12 +10,12 @@ interface SignupScreenProps {
   email: string;
   password: string;
   isEmailVerified: boolean;
-  openEmailError: unknown;
+  emailError: string;
   setEmail: (input: string) => void;
   setPassword: (input: string) => void;
   setStep: (step: SignupStep) => void;
   onPressCreateAccount: () => void;
-  openEmailApp: () => void;
+  validateEmailField: (email: string) => void;
 }
 
 const SignupScreenUI = (props: SignupScreenProps) => {
@@ -24,12 +24,12 @@ const SignupScreenUI = (props: SignupScreenProps) => {
     email,
     password,
     isEmailVerified,
-    openEmailError,
+    emailError,
     setStep,
     setEmail,
     setPassword,
     onPressCreateAccount,
-    openEmailApp,
+    validateEmailField,
   } = props;
 
   const renderScreen = () => {
@@ -39,19 +39,16 @@ const SignupScreenUI = (props: SignupScreenProps) => {
           <CreateAccount
             email={email}
             password={password}
+            emailError={emailError}
             setEmail={setEmail}
             setPassword={setPassword}
             onPressCreateAccount={onPressCreateAccount}
+            validateEmailField={validateEmailField}
           />
         );
       case SignupStep.VERIFY_EMAIL:
         return (
-          <VerifyEmail
-            isEmailVerified={isEmailVerified}
-            openEmailError={openEmailError}
-            setStep={setStep}
-            openEmailApp={openEmailApp}
-          />
+          <VerifyEmail isEmailVerified={isEmailVerified} setStep={setStep} />
         );
       case SignupStep.SELECT_HOUSEHOLD:
         return <SelectHousehold setStep={setStep} />;
@@ -62,9 +59,11 @@ const SignupScreenUI = (props: SignupScreenProps) => {
           <CreateAccount
             email={email}
             password={password}
+            emailError={emailError}
             setEmail={setEmail}
             setPassword={setPassword}
             onPressCreateAccount={onPressCreateAccount}
+            validateEmailField={validateEmailField}
           />
         );
     }
