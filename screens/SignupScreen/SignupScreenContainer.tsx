@@ -14,6 +14,7 @@ const SignupScreenContainer = () => {
   const {
     currentUser,
     isEmailVerified,
+    authError,
     signupWithEmailAndPassword,
     checkEmailVerificationStatus,
   } = useAuth();
@@ -21,6 +22,7 @@ const SignupScreenContainer = () => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const navigation = useNavigation<any>();
 
   const onPressCreateAccount = async () => {
@@ -33,6 +35,10 @@ const SignupScreenContainer = () => {
 
   const validateEmailField = (email: string) => {
     setEmailError(Validator.validateEmailAddress(email));
+  };
+
+  const validatePasswordField = (password: string) => {
+    setPasswordError(Validator.validatePassword(password));
   };
 
   useEffect(() => {
@@ -57,11 +63,14 @@ const SignupScreenContainer = () => {
       password={password}
       isEmailVerified={isEmailVerified}
       emailError={emailError}
+      authError={authError}
+      passwordError={passwordError}
       setStep={setStep}
       setEmail={setEmail}
       setPassword={setPassword}
       onPressCreateAccount={onPressCreateAccount}
       validateEmailField={validateEmailField}
+      validatePasswordField={validatePasswordField}
     />
   );
 };

@@ -4,6 +4,7 @@ import VerifyEmail from '../../components/SignupComponents/VerifyEmail';
 import SelectHousehold from '../../components/SignupComponents/SelectHouseHold';
 import SignupSuccess from '../../components/SignupComponents/SignupSuccess';
 import { View } from 'react-native';
+import { AuthError } from '../../constants/errorTypes';
 
 interface SignupScreenProps {
   step: SignupStep;
@@ -11,11 +12,14 @@ interface SignupScreenProps {
   password: string;
   isEmailVerified: boolean;
   emailError: string;
+  authError: AuthError | null;
+  passwordError: string;
   setEmail: (input: string) => void;
   setPassword: (input: string) => void;
   setStep: (step: SignupStep) => void;
   onPressCreateAccount: () => void;
   validateEmailField: (email: string) => void;
+  validatePasswordField: (password: string) => void;
 }
 
 const SignupScreenUI = (props: SignupScreenProps) => {
@@ -25,11 +29,14 @@ const SignupScreenUI = (props: SignupScreenProps) => {
     password,
     isEmailVerified,
     emailError,
+    authError,
+    passwordError,
     setStep,
     setEmail,
     setPassword,
     onPressCreateAccount,
     validateEmailField,
+    validatePasswordField,
   } = props;
 
   const renderScreen = () => {
@@ -40,10 +47,13 @@ const SignupScreenUI = (props: SignupScreenProps) => {
             email={email}
             password={password}
             emailError={emailError}
+            authError={authError}
+            passwordError={passwordError}
             setEmail={setEmail}
             setPassword={setPassword}
             onPressCreateAccount={onPressCreateAccount}
             validateEmailField={validateEmailField}
+            validatePasswordField={validatePasswordField}
           />
         );
       case SignupStep.VERIFY_EMAIL:
@@ -60,10 +70,13 @@ const SignupScreenUI = (props: SignupScreenProps) => {
             email={email}
             password={password}
             emailError={emailError}
+            authError={authError}
+            passwordError={passwordError}
             setEmail={setEmail}
             setPassword={setPassword}
             onPressCreateAccount={onPressCreateAccount}
             validateEmailField={validateEmailField}
+            validatePasswordField={validatePasswordField}
           />
         );
     }

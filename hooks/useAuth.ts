@@ -8,11 +8,13 @@ import {
   sendEmailVerification,
 } from 'firebase/auth';
 import { useEffect, useState } from 'react';
+import { AuthError } from '../constants/errorTypes';
 
 const useAuth = () => {
   const auth = getAuth();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [authError, setAuthError] = useState<AuthError | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -45,10 +47,8 @@ const useAuth = () => {
         sendVerificationEmail(user);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log('errorCode from signup', errorCode);
-        console.log('errorMessage from signup', errorMessage);
+        const { code, message } = error;
+        setAuthError({ code, message });
       });
   };
 
@@ -63,10 +63,8 @@ const useAuth = () => {
         return user;
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log('signin errorCode', errorCode);
-        console.log('signing errorMessage', errorMessage);
+        const { code, message } = error;
+        setAuthError({ code, message });
       });
   };
 
@@ -85,6 +83,7 @@ const useAuth = () => {
   return {
     currentUser,
     isEmailVerified,
+    authError,
     signupWithEmailAndPassword,
     signinWithEmailAndPassword,
     checkEmailVerificationStatus,

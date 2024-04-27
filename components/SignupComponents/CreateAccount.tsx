@@ -3,14 +3,18 @@ import AuthScreenWrapper from '../../baseComponents/AuthScreenWrapper';
 import Spacer from '../../baseComponents/Spacer';
 import Link from '../../baseComponents/Link';
 import { useNavigation } from '@react-navigation/native';
+import { AuthError } from '../../constants/errorTypes';
 interface CreateAccountScreenProps {
   email: string;
   password: string;
   emailError: string;
+  passwordError: string;
+  authError: AuthError | null;
   setEmail: (input: string) => void;
   setPassword: (input: string) => void;
   onPressCreateAccount: () => void;
   validateEmailField: (email: string) => void;
+  validatePasswordField: (password: string) => void;
 }
 
 const CreateAccount = (props: CreateAccountScreenProps) => {
@@ -18,10 +22,13 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
     email,
     password,
     emailError,
+    authError,
+    passwordError,
     onPressCreateAccount,
     setEmail,
     setPassword,
     validateEmailField,
+    validatePasswordField,
   } = props;
   const navigation = useNavigation<any>();
   // To Do: Set up the TS for the navigation
@@ -47,7 +54,7 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
         onEndEditing={(event) => validateEmailField(event.nativeEvent.text)}
       />
 
-      <Text>{emailError}</Text>
+      <Text style={[styles.label, styles.errorText]}>{emailError}</Text>
 
       <Spacer height={50} />
 
@@ -62,7 +69,10 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
         autoCapitalize='none'
         autoCorrect={false}
         onChangeText={(input) => setPassword(input)}
+        onEndEditing={(event) => validatePasswordField(event.nativeEvent.text)}
       />
+
+      <Text style={[styles.label, styles.errorText]}>{passwordError}</Text>
 
       <Spacer height={25} />
 
@@ -70,6 +80,10 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
         text='Already Signed Up?'
         onPress={() => navigation.navigate('Signin')}
       />
+
+      <Spacer height={25} />
+
+      <Text style={[styles.label, styles.errorText]}>{authError?.message}</Text>
     </AuthScreenWrapper>
   );
 };
@@ -79,6 +93,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontSize: 16,
     color: '#2f2e41',
+  },
+  errorText: {
+    color: '#f70835',
   },
   input: {
     borderColor: '#e6e6e6',
