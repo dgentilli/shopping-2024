@@ -3,7 +3,6 @@ import AuthScreenWrapper from '../../baseComponents/AuthScreenWrapper';
 import Spacer from '../../baseComponents/Spacer';
 import Link from '../../baseComponents/Link';
 import { useNavigation } from '@react-navigation/native';
-import useAuth from '../../hooks/useAuth';
 interface CreateAccountScreenProps {
   email: string;
   password: string;

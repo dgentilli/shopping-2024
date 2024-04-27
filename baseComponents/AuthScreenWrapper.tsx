@@ -9,11 +9,18 @@ interface AuthScreenWrapperProps {
   title: string;
   children: any;
   ctaTitle: string;
+  isButtonDisabled?: boolean;
   ctaCallback: () => void;
 }
 
 const AuthScreenWrapper = (props: AuthScreenWrapperProps) => {
-  const { title, children, ctaCallback, ctaTitle } = props;
+  const {
+    title,
+    children,
+    isButtonDisabled = false,
+    ctaTitle,
+    ctaCallback,
+  } = props;
   const { isKeyboardVisible } = useKeyboardState();
   const translateX = new Animated.Value(500);
 
@@ -55,6 +62,7 @@ const AuthScreenWrapper = (props: AuthScreenWrapperProps) => {
         <Button
           type={ButtonTypes.PRIMARY}
           title={ctaTitle}
+          isDisabled={isButtonDisabled}
           onPress={ctaCallback}
         />
       </View>

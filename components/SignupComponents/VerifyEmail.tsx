@@ -33,21 +33,13 @@ const VerifyEmail = (props: VerifyEmailScreenProps) => {
     );
   };
 
-  const getButtonProps = () => {
-    if (isEmailVerified) {
-      return {
-        ctaTitle: 'Next',
-        ctaCallback: () => setStep(SignupStep.SELECT_HOUSEHOLD),
-      };
-    }
-    return {
-      ctaTitle: 'Open Email App',
-      ctaCallback: () => {},
-    };
-  };
-
   return (
-    <AuthScreenWrapper title='Verify Email' {...getButtonProps()}>
+    <AuthScreenWrapper
+      title='Verify Email'
+      ctaTitle='Next'
+      isButtonDisabled={!isEmailVerified}
+      ctaCallback={() => setStep(SignupStep.SELECT_HOUSEHOLD)}
+    >
       <View style={styles.verificationStatusWrapper}>
         {renderStatusElements()}
       </View>

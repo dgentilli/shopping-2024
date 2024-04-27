@@ -4,11 +4,12 @@ import { ButtonTypes } from '../constants/buttonTypes';
 interface ButtonProps {
   type: ButtonTypes;
   title: string;
+  isDisabled?: boolean;
   onPress: () => void;
 }
 
 const Button = (props: ButtonProps) => {
-  const { type, title, onPress } = props;
+  const { type, title, isDisabled = false, onPress } = props;
 
   const getButtonStyle = () => {
     if (type === ButtonTypes.PRIMARY) {
@@ -24,10 +25,12 @@ const Button = (props: ButtonProps) => {
 
   return (
     <Pressable
+      disabled={isDisabled}
       style={({ pressed }) => [
         { opacity: pressed ? 0.5 : 1 },
         styles.buttonBase,
         getButtonStyle(),
+        isDisabled && styles.disabled,
       ]}
       onPress={onPress}
     >
@@ -52,6 +55,10 @@ const styles = StyleSheet.create({
   },
   buttonPrimaryText: {
     color: '#ffffff',
+  },
+  disabled: {
+    backgroundColor: '#847a85',
+    opacity: 0.7,
   },
 });
 
