@@ -33,10 +33,19 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
   const navigation = useNavigation<any>();
   // To Do: Set up the TS for the navigation
 
+  const isButtonDisabled = () => {
+    if (email.length && password.length && !emailError && !passwordError) {
+      return false;
+    }
+
+    return true;
+  };
+
   return (
     <AuthScreenWrapper
       title='Create Account'
       ctaTitle='Next'
+      isButtonDisabled={isButtonDisabled()}
       ctaCallback={onPressCreateAccount}
     >
       <Text style={styles.label}>Enter your email address</Text>

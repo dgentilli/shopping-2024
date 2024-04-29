@@ -2,30 +2,38 @@ import { Text, TextInput, StyleSheet } from 'react-native';
 import AuthScreenWrapper from '../../baseComponents/AuthScreenWrapper';
 import Spacer from '../../baseComponents/Spacer';
 import Link from '../../baseComponents/Link';
+import { AuthError } from '../../constants/errorTypes';
 
 interface SigninScreenProps {
   email: string;
   password: string;
+  emailError: string;
+  authError: AuthError | null;
   setEmail: (input: string) => void;
   setPassword: (input: string) => void;
   onPressLink: () => void;
   onPressCtaButton: () => void;
+  validateEmailField: (input: string) => void;
 }
 
 const SigninScreenUI = (props: SigninScreenProps) => {
   const {
     email,
     password,
+    emailError,
+    authError,
     setEmail,
     setPassword,
     onPressLink,
     onPressCtaButton,
+    validateEmailField,
   } = props;
 
   return (
     <AuthScreenWrapper
       title='Sign In'
       ctaTitle='Sign in'
+      isButtonDisabled={Boolean(emailError)}
       ctaCallback={onPressCtaButton}
     >
       <Text style={styles.label}>Enter your email address</Text>
@@ -39,7 +47,10 @@ const SigninScreenUI = (props: SigninScreenProps) => {
         autoCapitalize='none'
         autoCorrect={false}
         onChangeText={(input) => setEmail(input)}
+        onEndEditing={(event) => validateEmailField(event.nativeEvent.text)}
       />
+
+      <Text style={[styles.label, styles.errorText]}>{emailError}</Text>
 
       <Spacer height={50} />
 
@@ -59,6 +70,10 @@ const SigninScreenUI = (props: SigninScreenProps) => {
       <Spacer height={25} />
 
       <Link text='Need to Sign up?' onPress={onPressLink} />
+
+      <Spacer height={25} />
+
+      <Text style={[styles.label, styles.errorText]}>{authError?.message}</Text>
     </AuthScreenWrapper>
   );
 };
@@ -68,6 +83,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontSize: 16,
     color: '#2f2e41',
+  },
+  errorText: {
+    color: '#f70835',
   },
   input: {
     borderColor: '#e6e6e6',
