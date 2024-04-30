@@ -29,11 +29,19 @@ const SigninScreenUI = (props: SigninScreenProps) => {
     validateEmailField,
   } = props;
 
+  const isButtonDisabled = () => {
+    if (email.length && password.length && !emailError) {
+      return false;
+    }
+
+    return true;
+  };
+
   return (
     <AuthScreenWrapper
       title='Sign In'
       ctaTitle='Sign in'
-      isButtonDisabled={Boolean(emailError)}
+      isButtonDisabled={isButtonDisabled()}
       ctaCallback={onPressCtaButton}
     >
       <Text style={styles.label}>Enter your email address</Text>
@@ -73,7 +81,9 @@ const SigninScreenUI = (props: SigninScreenProps) => {
 
       <Spacer height={25} />
 
-      <Text style={[styles.label, styles.errorText]}>{authError?.message}</Text>
+      <Text style={[styles.label, styles.errorText]}>
+        {authError?.code.slice(5)}
+      </Text>
     </AuthScreenWrapper>
   );
 };

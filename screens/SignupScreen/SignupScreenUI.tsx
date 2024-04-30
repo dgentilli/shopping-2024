@@ -58,7 +58,11 @@ const SignupScreenUI = (props: SignupScreenProps) => {
         );
       case SignupStep.VERIFY_EMAIL:
         return (
-          <VerifyEmail isEmailVerified={isEmailVerified} setStep={setStep} />
+          <VerifyEmail
+            isEmailVerified={isEmailVerified}
+            email={email}
+            setStep={setStep}
+          />
         );
       case SignupStep.SELECT_HOUSEHOLD:
         return <SelectHousehold setStep={setStep} />;

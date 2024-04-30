@@ -92,7 +92,9 @@ const CreateAccount = (props: CreateAccountScreenProps) => {
 
       <Spacer height={25} />
 
-      <Text style={[styles.label, styles.errorText]}>{authError?.message}</Text>
+      <Text style={[styles.label, styles.errorText]}>
+        {authError?.code.slice(5)}
+      </Text>
     </AuthScreenWrapper>
   );
 };

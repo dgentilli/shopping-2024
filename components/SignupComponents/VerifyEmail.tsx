@@ -3,14 +3,16 @@ import { SignupStep } from '../../constants/signup';
 import AuthScreenWrapper from '../../baseComponents/AuthScreenWrapper';
 import { StyleSheet, Text, View } from 'react-native';
 import Spacer from '../../baseComponents/Spacer';
+import Link from '../../baseComponents/Link';
 
 interface VerifyEmailScreenProps {
   isEmailVerified: boolean;
+  email: string;
   setStep: (step: SignupStep) => void;
 }
 
 const VerifyEmail = (props: VerifyEmailScreenProps) => {
-  const { isEmailVerified, setStep } = props;
+  const { isEmailVerified, email, setStep } = props;
 
   const renderStatusElements = () => {
     if (isEmailVerified) {
@@ -29,6 +31,11 @@ const VerifyEmail = (props: VerifyEmailScreenProps) => {
         <Text style={styles.verificationStatusText}>
           Awaiting Email Verification
         </Text>
+        <Spacer height={20} />
+        <Link
+          text='Go Back'
+          onPress={() => setStep(SignupStep.CREATE_ACCOUNT)}
+        />
       </>
     );
   };
@@ -41,6 +48,10 @@ const VerifyEmail = (props: VerifyEmailScreenProps) => {
       ctaCallback={() => setStep(SignupStep.SELECT_HOUSEHOLD)}
     >
       <View style={styles.verificationStatusWrapper}>
+        <Text style={styles.verificationStatusText}>{email}</Text>
+
+        <Spacer height={20} />
+
         {renderStatusElements()}
       </View>
     </AuthScreenWrapper>
