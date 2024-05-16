@@ -8,8 +8,10 @@ import {
   query,
   updateDoc,
   where,
+  setDoc,
 } from 'firebase/firestore';
-import { uuid } from 'uuidv4';
+import 'react-native-get-random-values'; // Must be imported before uuid
+import { v4 as uuidv4 } from 'uuid';
 import { db } from '../../App';
 import SignupScreenUI from './SignupScreenUI';
 import useAuth from '../../hooks/useAuth';
@@ -60,31 +62,36 @@ const SignupScreenContainer = () => {
   const generateShareCode = () => {
     const chars =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    console.log('chars from generate code', chars);
     let result = '';
     for (let i = 0; i < SHARE_CODE_LENGTH; i++) {
       result += chars.charAt(Math.floor(Math.random() * chars.length));
     }
+    console.log('result ****', result);
     return result;
   };
 
-  const onSelectHousehold = async (householdCode: string) => {
+  const onSelectHousehold = async () => {
+    console.log('onSelectHousehold fires !!!!');
     if (!currentUser) return;
+    // const userId = currentUser.uid;
     try {
       let householdId;
       if (!householdCode || householdCode.length < 1) {
         const householdData = {
-          id: uuid(),
+          id: uuidv4(),
+          // id: '1234',
           shareCode: generateShareCode(),
           userIds: [currentUser?.uid],
+          // userIds: [userId],
           listId: [],
         };
 
-        const householdRef = await addDoc(
-          collection(db, 'households'),
-          householdData
-        );
+        const householdRef = await addDoc(collection(db, 'households'), {
+          householdData,
+        });
+
         householdId = householdRef.id;
+
         const updatedUser = await updateDoc(currentUser as any, {
           householdId,
         });
@@ -147,6 +154,7 @@ const SignupScreenContainer = () => {
       onPressCreateAccount={onPressCreateAccount}
       validateEmailField={validateEmailField}
       validatePasswordField={validatePasswordField}
+      onSelectHousehold={onSelectHousehold}
     />
   );
 };
