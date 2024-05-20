@@ -3,10 +3,8 @@ import {
   addDoc,
   collection,
   doc,
-  getDoc,
   getDocs,
   query,
-  updateDoc,
   where,
   setDoc,
 } from 'firebase/firestore';
@@ -15,13 +13,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { db } from '../../App';
 import SignupScreenUI from './SignupScreenUI';
 import useAuth from '../../hooks/useAuth';
-import { useNavigation } from '@react-navigation/native';
 import { SignupStep } from '../../constants/signup';
 import useAppState from '../../hooks/useAppState';
 import Validator from '../../services/Validator';
-// import { User } from '../../models/firestore';
-
-const SHARE_CODE_LENGTH = 8;
 
 const MemoizedSignupScreenUI = React.memo(SignupScreenUI);
 
@@ -41,7 +35,10 @@ const SignupScreenContainer = () => {
   const [passwordError, setPasswordError] = useState('');
   const [householdCode, sethouseholdCode] = useState('');
   const [householdError, setHouseholdError] = useState('');
-  const navigation = useNavigation<any>();
+
+  useEffect(() => {
+    console.log({ householdCode });
+  }, [householdCode]);
 
   const onPressCreateAccount = async () => {
     try {
@@ -59,27 +56,28 @@ const SignupScreenContainer = () => {
     setPasswordError(Validator.validatePassword(password));
   };
 
-  const generateShareCode = () => {
-    const chars =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for (let i = 0; i < SHARE_CODE_LENGTH; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    console.log('result ****', result);
-    return result;
-  };
-
   const onSelectHousehold = async () => {
     console.log('onSelectHousehold fires !!!!');
-    if (!currentUser) return;
-    // const userId = currentUser.uid;
+    if (!currentUser) {
+      console.log('no user');
+      return;
+    }
+
     try {
       let householdId;
+      let userData: {
+        uid: string;
+        email: string | null;
+        householdId?: string;
+      } = {
+        uid: currentUser.uid,
+        email: currentUser.email,
+      };
+
       if (!householdCode || householdCode.length < 1) {
+        console.log('new house block runs!!!');
         const householdData = {
-          id: uuidv4(),
-          shareCode: generateShareCode(),
+          shareCode: uuidv4(),
           userIds: [currentUser?.uid],
           listId: [],
         };
@@ -89,23 +87,21 @@ const SignupScreenContainer = () => {
         });
 
         householdId = householdRef.id;
-
-        const userData = {
-          uid: currentUser.uid,
-          email: currentUser.email,
-          householdId,
-        };
-
+        userData.householdId = householdId;
         const userRef = doc(db, 'users', currentUser.uid);
         const updatedUser = await setDoc(userRef, userData);
-
+        setStep(SignupStep.SIGNUP_SUCCESS);
         console.log('updatedUser - new household', updatedUser);
         return;
       }
+      console.log('existing house block runs::::::');
 
       const householdsRef = collection(db, 'households');
+      console.log('householdRef from existing block', householdsRef);
       const q = query(householdsRef, where('shareCode', '==', householdCode));
+      console.log('qqqqqqq', q);
       const querySnapshot = await getDocs(q);
+      console.log('querySnapshot', querySnapshot);
 
       if (!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
@@ -113,25 +109,22 @@ const SignupScreenContainer = () => {
           householdId = doc.data().id;
         });
       } else {
-        setHouseholdError('Invalid Household');
+        setHouseholdError('There was a problem creating your household');
       }
 
       if (householdId) {
-        const userData = {
-          uid: currentUser.uid,
-          email: currentUser.email,
-          householdId,
-        };
-
+        userData.householdId = householdId;
         const userRef = doc(db, 'users', currentUser.uid);
         const updatedUser = await setDoc(userRef, userData);
-
+        setStep(SignupStep.SIGNUP_SUCCESS);
         console.log('updatedUser - new household', updatedUser);
         return;
       }
+
       return;
     } catch (error) {
       console.error('error from onSelectHousehold', error);
+      setHouseholdError('Invalid Household Code');
     }
   };
 
@@ -159,6 +152,8 @@ const SignupScreenContainer = () => {
       emailError={emailError}
       authError={authError}
       passwordError={passwordError}
+      householdCode={householdCode}
+      householdError={householdError}
       setStep={setStep}
       setEmail={setEmail}
       setPassword={setPassword}
@@ -166,8 +161,30 @@ const SignupScreenContainer = () => {
       validateEmailField={validateEmailField}
       validatePasswordField={validatePasswordField}
       onSelectHousehold={onSelectHousehold}
+      sethouseholdCode={sethouseholdCode}
     />
   );
 };
 
 export default SignupScreenContainer;
+
+/**
+ * Pass the set household code prop
+ * Improve the generate share code func to check if the code is already used
+ * Improve the logic - once the household as either been created / added
+ * Navigate to the next screen
+ * Handle errors
+ * clean up code
+ */
+
+/**
+ * Case add user to existing householf
+ * Currently doesn't work
+ * The conditional logic in your function is correct
+ * so it has to be a problem with how you are updating the database
+ *
+ * After you solve that problem
+ * Re-test flows
+ * Handle errors
+ * Clean up code
+ */

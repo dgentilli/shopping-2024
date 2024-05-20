@@ -5,6 +5,7 @@ import SelectHousehold from '../../components/SignupComponents/SelectHouseHold';
 import SignupSuccess from '../../components/SignupComponents/SignupSuccess';
 import { View } from 'react-native';
 import { AuthError } from '../../constants/errorTypes';
+import { useEffect } from 'react';
 
 interface SignupScreenProps {
   step: SignupStep;
@@ -14,6 +15,8 @@ interface SignupScreenProps {
   emailError: string;
   authError: AuthError | null;
   passwordError: string;
+  householdCode: string;
+  householdError: string;
   setEmail: (input: string) => void;
   setPassword: (input: string) => void;
   setStep: (step: SignupStep) => void;
@@ -21,6 +24,7 @@ interface SignupScreenProps {
   validateEmailField: (email: string) => void;
   validatePasswordField: (password: string) => void;
   onSelectHousehold: () => void;
+  sethouseholdCode: (input: string) => void;
 }
 
 const SignupScreenUI = (props: SignupScreenProps) => {
@@ -32,6 +36,8 @@ const SignupScreenUI = (props: SignupScreenProps) => {
     emailError,
     authError,
     passwordError,
+    householdCode,
+    householdError,
     setStep,
     setEmail,
     setPassword,
@@ -39,8 +45,10 @@ const SignupScreenUI = (props: SignupScreenProps) => {
     validateEmailField,
     validatePasswordField,
     onSelectHousehold,
+    sethouseholdCode,
   } = props;
 
+  console.log('@#$!@#$!', householdCode);
   const renderScreen = () => {
     switch (step) {
       case SignupStep.CREATE_ACCOUNT:
@@ -69,8 +77,11 @@ const SignupScreenUI = (props: SignupScreenProps) => {
       case SignupStep.SELECT_HOUSEHOLD:
         return (
           <SelectHousehold
+            householdCode={householdCode}
+            householdError={householdError}
             setStep={setStep}
             onSelectHousehold={onSelectHousehold}
+            sethouseholdCode={sethouseholdCode}
           />
         );
       case SignupStep.SIGNUP_SUCCESS:

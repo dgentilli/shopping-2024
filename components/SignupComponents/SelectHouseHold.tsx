@@ -6,19 +6,26 @@ import Spacer from '../../baseComponents/Spacer';
 import ParagraphText from '../../baseComponents/ParagraphText';
 
 interface SelectHouseholdProps {
+  householdCode: string;
+  householdError: string;
   setStep: (step: SignupStep) => void;
   onSelectHousehold: () => void;
+  sethouseholdCode: (input: string) => void;
 }
 
 const SelectHousehold = (props: SelectHouseholdProps) => {
-  const { setStep, onSelectHousehold } = props;
-  const [householdCode, sethouseholdCode] = useState('');
+  const {
+    householdCode,
+    householdError,
+    setStep,
+    onSelectHousehold,
+    sethouseholdCode,
+  } = props;
 
   return (
     <AuthScreenWrapper
       title='Select Household'
       ctaTitle='Next'
-      // ctaCallback={() => setStep(SignupStep.SIGNUP_SUCCESS)}
       ctaCallback={onSelectHousehold}
     >
       <Text style={styles.secondaryTitle}>Joining an existing household?</Text>
