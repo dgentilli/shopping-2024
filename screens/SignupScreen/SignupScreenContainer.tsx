@@ -79,10 +79,8 @@ const SignupScreenContainer = () => {
       if (!householdCode || householdCode.length < 1) {
         const householdData = {
           id: uuidv4(),
-          // id: '1234',
           shareCode: generateShareCode(),
           userIds: [currentUser?.uid],
-          // userIds: [userId],
           listId: [],
         };
 
@@ -92,9 +90,15 @@ const SignupScreenContainer = () => {
 
         householdId = householdRef.id;
 
-        const updatedUser = await updateDoc(currentUser as any, {
+        const userData = {
+          uid: currentUser.uid,
+          email: currentUser.email,
           householdId,
-        });
+        };
+
+        const userRef = doc(db, 'users', currentUser.uid);
+        const updatedUser = await setDoc(userRef, userData);
+
         console.log('updatedUser - new household', updatedUser);
         return;
       }
@@ -113,10 +117,17 @@ const SignupScreenContainer = () => {
       }
 
       if (householdId) {
-        const updatedUser = await updateDoc(currentUser as any, {
+        const userData = {
+          uid: currentUser.uid,
+          email: currentUser.email,
           householdId,
-        });
-        console.log('updatedUser - existing household', updatedUser);
+        };
+
+        const userRef = doc(db, 'users', currentUser.uid);
+        const updatedUser = await setDoc(userRef, userData);
+
+        console.log('updatedUser - new household', updatedUser);
+        return;
       }
       return;
     } catch (error) {
