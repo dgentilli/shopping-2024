@@ -48,7 +48,6 @@ const SignupScreenUI = (props: SignupScreenProps) => {
     sethouseholdCode,
   } = props;
 
-  console.log('@#$!@#$!', householdCode);
   const renderScreen = () => {
     switch (step) {
       case SignupStep.CREATE_ACCOUNT:

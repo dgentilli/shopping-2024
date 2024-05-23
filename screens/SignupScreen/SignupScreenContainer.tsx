@@ -35,10 +35,7 @@ const SignupScreenContainer = () => {
   const [passwordError, setPasswordError] = useState('');
   const [householdCode, sethouseholdCode] = useState('');
   const [householdError, setHouseholdError] = useState('');
-
-  useEffect(() => {
-    console.log({ householdCode });
-  }, [householdCode]);
+  console.log('householdCode', householdCode);
 
   const onPressCreateAccount = async () => {
     try {
@@ -57,7 +54,6 @@ const SignupScreenContainer = () => {
   };
 
   const onSelectHousehold = async () => {
-    console.log('onSelectHousehold fires !!!!');
     if (!currentUser) {
       console.log('no user');
       return;
@@ -75,7 +71,6 @@ const SignupScreenContainer = () => {
       };
 
       if (!householdCode || householdCode.length < 1) {
-        console.log('new house block runs!!!');
         const householdData = {
           shareCode: uuidv4(),
           userIds: [currentUser?.uid],
@@ -94,21 +89,26 @@ const SignupScreenContainer = () => {
         console.log('updatedUser - new household', updatedUser);
         return;
       }
-      console.log('existing house block runs::::::');
 
-      const householdsRef = collection(db, 'households');
-      console.log('householdRef from existing block', householdsRef);
-      const q = query(householdsRef, where('shareCode', '==', householdCode));
-      console.log('qqqqqqq', q);
+      const householdRef = collection(db, 'households');
+
+      const q = query(
+        householdRef,
+        where('householdData.shareCode', '==', householdCode)
+      );
       const querySnapshot = await getDocs(q);
-      console.log('querySnapshot', querySnapshot);
 
       if (!querySnapshot.empty) {
+        console.log('query snapshot is NOT empty !!!!!!!');
         querySnapshot.forEach((doc) => {
           console.log('doc from querySnapshot', doc);
-          householdId = doc.data().id;
+          const testData = doc.data();
+          console.log('testData,,,,,,', testData);
+          console.log('doc.data().id', doc.id);
+          householdId = doc.id;
         });
       } else {
+        console.log('existing household else block - there is a problem');
         setHouseholdError('There was a problem creating your household');
       }
 
@@ -116,8 +116,8 @@ const SignupScreenContainer = () => {
         userData.householdId = householdId;
         const userRef = doc(db, 'users', currentUser.uid);
         const updatedUser = await setDoc(userRef, userData);
+        console.log('updatedUser', updatedUser);
         setStep(SignupStep.SIGNUP_SUCCESS);
-        console.log('updatedUser - new household', updatedUser);
         return;
       }
 
