@@ -7,6 +7,8 @@ import {
   query,
   where,
   setDoc,
+  updateDoc,
+  arrayUnion,
 } from 'firebase/firestore';
 import 'react-native-get-random-values'; // Must be imported before uuid
 import { v4 as uuidv4 } from 'uuid';
@@ -70,7 +72,7 @@ const SignupScreenContainer = () => {
         email: currentUser.email,
       };
 
-      if (!householdCode || householdCode.length < 1) {
+      if (!householdCode) {
         const householdData = {
           shareCode: uuidv4(),
           userIds: [currentUser?.uid],
@@ -84,9 +86,8 @@ const SignupScreenContainer = () => {
         householdId = householdRef.id;
         userData.householdId = householdId;
         const userRef = doc(db, 'users', currentUser.uid);
-        const updatedUser = await setDoc(userRef, userData);
+        await setDoc(userRef, userData);
         setStep(SignupStep.SIGNUP_SUCCESS);
-        console.log('updatedUser - new household', updatedUser);
         return;
       }
 
@@ -99,12 +100,7 @@ const SignupScreenContainer = () => {
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        console.log('query snapshot is NOT empty !!!!!!!');
         querySnapshot.forEach((doc) => {
-          console.log('doc from querySnapshot', doc);
-          const testData = doc.data();
-          console.log('testData,,,,,,', testData);
-          console.log('doc.data().id', doc.id);
           householdId = doc.id;
         });
       } else {
@@ -116,7 +112,12 @@ const SignupScreenContainer = () => {
         userData.householdId = householdId;
         const userRef = doc(db, 'users', currentUser.uid);
         const updatedUser = await setDoc(userRef, userData);
+        const householdDoc = doc(db, 'households', householdId);
+        const updatedHousehold = await updateDoc(householdDoc, {
+          'householdData.userIds': arrayUnion(currentUser.uid),
+        });
         console.log('updatedUser', updatedUser);
+        console.log('updatedHousehold', updatedHousehold);
         setStep(SignupStep.SIGNUP_SUCCESS);
         return;
       }
@@ -169,19 +170,6 @@ const SignupScreenContainer = () => {
 export default SignupScreenContainer;
 
 /**
- * Pass the set household code prop
- * Improve the generate share code func to check if the code is already used
- * Improve the logic - once the household as either been created / added
- * Navigate to the next screen
- * Handle errors
- * clean up code
- */
-
-/**
- * Case add user to existing householf
- * Currently doesn't work
- * The conditional logic in your function is correct
- * so it has to be a problem with how you are updating the database
  *
  * After you solve that problem
  * Re-test flows
