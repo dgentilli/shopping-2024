@@ -37,7 +37,6 @@ const SignupScreenContainer = () => {
   const [passwordError, setPasswordError] = useState('');
   const [householdCode, sethouseholdCode] = useState('');
   const [householdError, setHouseholdError] = useState('');
-  console.log('householdCode', householdCode);
 
   const onPressCreateAccount = async () => {
     try {
@@ -57,7 +56,7 @@ const SignupScreenContainer = () => {
 
   const onSelectHousehold = async () => {
     if (!currentUser) {
-      console.log('no user');
+      setHouseholdError('You must be a registered user');
       return;
     }
 
@@ -111,13 +110,11 @@ const SignupScreenContainer = () => {
       if (householdId) {
         userData.householdId = householdId;
         const userRef = doc(db, 'users', currentUser.uid);
-        const updatedUser = await setDoc(userRef, userData);
+        await setDoc(userRef, userData);
         const householdDoc = doc(db, 'households', householdId);
-        const updatedHousehold = await updateDoc(householdDoc, {
+        await updateDoc(householdDoc, {
           'householdData.userIds': arrayUnion(currentUser.uid),
         });
-        console.log('updatedUser', updatedUser);
-        console.log('updatedHousehold', updatedHousehold);
         setStep(SignupStep.SIGNUP_SUCCESS);
         return;
       }
@@ -168,11 +165,3 @@ const SignupScreenContainer = () => {
 };
 
 export default SignupScreenContainer;
-
-/**
- *
- * After you solve that problem
- * Re-test flows
- * Handle errors
- * Clean up code
- */
