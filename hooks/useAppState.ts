@@ -6,10 +6,6 @@ const useAppState = () => {
   const [currentAppState, setCurrentAppState] = useState(appState.current);
 
   useEffect(() => {
-    console.log('appState from useEffect', currentAppState);
-  }, [currentAppState]);
-
-  useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
       setCurrentAppState(nextAppState);
     });
