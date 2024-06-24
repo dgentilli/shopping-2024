@@ -18,6 +18,7 @@ import useAuth from '../../hooks/useAuth';
 import { SignupStep } from '../../constants/signup';
 import useAppState from '../../hooks/useAppState';
 import Validator from '../../services/Validator';
+import useUserStore from '../../state/user';
 
 const MemoizedSignupScreenUI = React.memo(SignupScreenUI);
 
@@ -37,6 +38,7 @@ const SignupScreenContainer = () => {
   const [passwordError, setPasswordError] = useState('');
   const [householdCode, sethouseholdCode] = useState('');
   const [householdError, setHouseholdError] = useState('');
+  const { setIsSignupComplete } = useUserStore();
 
   const onPressCreateAccount = async () => {
     try {
@@ -126,6 +128,10 @@ const SignupScreenContainer = () => {
     }
   };
 
+  const onCompleteSignup = () => {
+    setIsSignupComplete(true);
+  };
+
   useEffect(() => {
     if (step === SignupStep.CREATE_ACCOUNT && Boolean(currentUser)) {
       setStep(SignupStep.VERIFY_EMAIL);
@@ -160,6 +166,7 @@ const SignupScreenContainer = () => {
       validatePasswordField={validatePasswordField}
       onSelectHousehold={onSelectHousehold}
       sethouseholdCode={sethouseholdCode}
+      onCompleteSignup={onCompleteSignup}
     />
   );
 };

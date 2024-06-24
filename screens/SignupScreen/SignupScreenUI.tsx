@@ -25,6 +25,7 @@ interface SignupScreenProps {
   validatePasswordField: (password: string) => void;
   onSelectHousehold: () => void;
   sethouseholdCode: (input: string) => void;
+  onCompleteSignup: () => void;
 }
 
 const SignupScreenUI = (props: SignupScreenProps) => {
@@ -46,6 +47,7 @@ const SignupScreenUI = (props: SignupScreenProps) => {
     validatePasswordField,
     onSelectHousehold,
     sethouseholdCode,
+    onCompleteSignup,
   } = props;
 
   const renderScreen = () => {
@@ -84,7 +86,7 @@ const SignupScreenUI = (props: SignupScreenProps) => {
           />
         );
       case SignupStep.SIGNUP_SUCCESS:
-        return <SignupSuccess />;
+        return <SignupSuccess onCompleteSignup={onCompleteSignup} />;
       default:
         return (
           <CreateAccount
