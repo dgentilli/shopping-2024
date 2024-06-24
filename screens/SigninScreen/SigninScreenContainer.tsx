@@ -29,11 +29,6 @@ const SigninScreenContainer = () => {
     }
   };
 
-  useEffect(() => {
-    // To Do: implement the logic for switching to the Main Navigator
-    console.log('currentUser from signin', currentUser);
-  }, []);
-
   return (
     <MemoizedSignupScreenUI
       email={email}
