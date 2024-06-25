@@ -19,6 +19,7 @@ import { SignupStep } from '../../constants/signup';
 import useAppState from '../../hooks/useAppState';
 import Validator from '../../services/Validator';
 import useUserStore from '../../state/user';
+import useHouseholdStore from '../../state/household';
 
 const MemoizedSignupScreenUI = React.memo(SignupScreenUI);
 
@@ -39,6 +40,7 @@ const SignupScreenContainer = () => {
   const [householdCode, sethouseholdCode] = useState('');
   const [householdError, setHouseholdError] = useState('');
   const { setIsSignupComplete } = useUserStore();
+  const { setHouseHoldShareCode } = useHouseholdStore();
 
   const onPressCreateAccount = async () => {
     try {
@@ -84,6 +86,11 @@ const SignupScreenContainer = () => {
           householdData,
         });
 
+        if (!householdRef) {
+          console.error('Error setting the household');
+        }
+
+        setHouseHoldShareCode(householdData.shareCode);
         householdId = householdRef.id;
         userData.householdId = householdId;
         const userRef = doc(db, 'users', currentUser.uid);
@@ -104,6 +111,8 @@ const SignupScreenContainer = () => {
         querySnapshot.forEach((doc) => {
           householdId = doc.id;
         });
+
+        setHouseHoldShareCode(householdCode);
       } else {
         console.log('existing household else block - there is a problem');
         setHouseholdError('There was a problem creating your household');

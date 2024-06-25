@@ -6,19 +6,19 @@ import { ButtonTypes } from '../../constants/buttonTypes';
 import Spacer from '../../baseComponents/Spacer';
 import SettingsRow from '../../components/SettingsComponents/SettingsRow';
 import { truncateText } from '../../helpers/stringHelpers';
+import useHouseholdStore from '../../state/household';
 
 interface SettingsScreenProps {
   onPressLogout: () => void;
 }
 
-const MOCK_CODE = '7abc12-345defg67-1234-abc55a1gh23';
-
 const SettingsScreenUI = (props: SettingsScreenProps) => {
   const { onPressLogout } = props;
-  const truncatedText = truncateText(MOCK_CODE, 20);
+  const { householdShareCode } = useHouseholdStore();
+  const truncatedText = truncateText(householdShareCode, 20);
 
   const copyToClipboard = async () => {
-    await Clipboard.setStringAsync(MOCK_CODE);
+    await Clipboard.setStringAsync(householdShareCode);
   };
 
   return (
