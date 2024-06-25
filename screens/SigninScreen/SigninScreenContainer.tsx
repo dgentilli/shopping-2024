@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import SigninScreenUI from './SigninScreenUI';
 import { useNavigation } from '@react-navigation/native';
 import useAuth from '../../hooks/useAuth';
 import Validator from '../../services/Validator';
+import useUserStore from '../../state/user';
 const MemoizedSignupScreenUI = React.memo(SigninScreenUI);
 
 const SigninScreenContainer = () => {
-  const { signinWithEmailAndPassword, currentUser, authError } = useAuth();
+  const { signinWithEmailAndPassword, authError } = useAuth();
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
+  const { setIsSignupComplete } = useUserStore();
 
   const navigation = useNavigation<any>();
   // To Do: Add TS to the navigation
@@ -21,18 +23,14 @@ const SigninScreenContainer = () => {
     setEmailError(Validator.validateEmailAddress(email));
   };
 
-  const onPressCtaButton = () => {
+  const onPressCtaButton = async () => {
     try {
-      signinWithEmailAndPassword(email, password);
+      await signinWithEmailAndPassword(email, password);
+      setIsSignupComplete(true);
     } catch (error) {
       console.log('error from signin screen', error);
     }
   };
-
-  useEffect(() => {
-    // To Do: implement the logic for switching to the Main Navigator
-    console.log('currentUser from signin', currentUser);
-  }, []);
 
   return (
     <MemoizedSignupScreenUI
