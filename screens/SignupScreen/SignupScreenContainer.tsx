@@ -114,7 +114,6 @@ const SignupScreenContainer = () => {
 
         setHouseHoldShareCode(householdCode);
       } else {
-        console.log('existing household else block - there is a problem');
         setHouseholdError('There was a problem creating your household');
       }
 

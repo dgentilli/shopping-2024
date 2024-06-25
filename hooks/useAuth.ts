@@ -18,7 +18,7 @@ const useAuth = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log('user from authState listener', user);
+      // console.log('user from authState listener', user);
       setCurrentUser(user);
       setIsEmailVerified(Boolean(user?.emailVerified));
     });
@@ -29,7 +29,7 @@ const useAuth = () => {
   const sendVerificationEmail = async (user: User) => {
     try {
       await sendEmailVerification(user);
-      console.log('Verification email sent to:', user.email);
+      // console.log('Verification email sent to:', user.email);
     } catch (error) {
       console.error('Error sending verification email:', error);
       // Handle error appropriately (e.g., display message to user)
@@ -43,7 +43,6 @@ const useAuth = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log('user from createUserWithEmailAndPassword', user);
         sendVerificationEmail(user);
       })
       .catch((error) => {
@@ -59,7 +58,6 @@ const useAuth = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log('user from Sign in', user);
         return user;
       })
       .catch((error) => {
