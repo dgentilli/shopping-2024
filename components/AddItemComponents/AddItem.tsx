@@ -5,6 +5,7 @@ import Spacer from '../../baseComponents/Spacer';
 import Button from '../../baseComponents/Button';
 import { ButtonTypes } from '../../constants/buttonTypes';
 import Link from '../../baseComponents/Link';
+import CountButton from '../../baseComponents/CountButton';
 
 interface AddItemProps {
   title?: string;
@@ -28,6 +29,8 @@ const AddItem = (props: AddItemProps) => {
         autoCorrect={false}
         onChangeText={(input: string) => setNewItem(input)}
       />
+      <Spacer height={20} />
+      <CountButton count={1} increment={() => {}} decrement={() => {}} />
       <Spacer height={20} />
       <View style={styles.buttonContainer}>
         <Button

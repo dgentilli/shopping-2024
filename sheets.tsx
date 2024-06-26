@@ -1,6 +1,5 @@
 import { SheetDefinition, registerSheet } from 'react-native-actions-sheet';
 import AddItem from './components/AddItemComponents/AddItem';
-// import BottomSheet from './baseComponents/BottomSheet';
 
 registerSheet('add-item-sheet', AddItem);
 
@@ -16,5 +15,3 @@ export const setupSheets = () => {
   // This function doesn't need to do anything
   // Its purpose is to ensure the module is executed
 };
-
-// export {};
