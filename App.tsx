@@ -7,24 +7,31 @@ import { firebaseConfig } from './firebaseConfig';
 import { getFirestore } from 'firebase/firestore';
 import useAuth from './hooks/useAuth';
 import useUserStore from './state/user';
+import { SheetProvider } from 'react-native-actions-sheet';
+// import './sheets';
+import { setupSheets } from './sheets';
 
 const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
+
+setupSheets();
 
 export default function App() {
   const { currentUser } = useAuth();
   const { isSignupComplete } = useUserStore();
 
   return (
-    <NavigationContainer>
-      <SafeAreaProvider>
-        {currentUser && isSignupComplete ? (
-          <MainNavigator />
-        ) : (
-          <AuthNavigator />
-        )}
-      </SafeAreaProvider>
-    </NavigationContainer>
+    <SheetProvider>
+      <NavigationContainer>
+        <SafeAreaProvider>
+          {currentUser && isSignupComplete ? (
+            <MainNavigator />
+          ) : (
+            <AuthNavigator />
+          )}
+        </SafeAreaProvider>
+      </NavigationContainer>
+    </SheetProvider>
   );
 }

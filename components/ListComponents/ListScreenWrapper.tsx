@@ -2,6 +2,8 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import Spacer from '../../baseComponents/Spacer';
 import Button from '../../baseComponents/Button';
 import { ButtonTypes } from '../../constants/buttonTypes';
+import { SheetManager, SheetProvider } from 'react-native-actions-sheet';
+import AddItem from '../AddItemComponents/AddItem';
 
 interface ListScreenWrapperProps {
   newItem: string;
@@ -11,26 +13,21 @@ interface ListScreenWrapperProps {
 
 const ListScreenWrapper = (props: ListScreenWrapperProps) => {
   const { children, newItem, setNewItem } = props;
+
   return (
-    <View style={styles.wrapper}>
-      <TextInput
-        style={styles.input}
-        value={newItem}
-        placeholder='Add an Item'
-        placeholderTextColor='#3f3d56'
-        autoCapitalize='words'
-        autoCorrect={false}
-        onChangeText={(input) => setNewItem(input)}
-      />
-
-      <Spacer height={20} />
-
-      <Button type={ButtonTypes.PRIMARY} title='Add' onPress={() => {}} />
-
-      <Spacer height={20} />
-
-      {children}
-    </View>
+    <SheetProvider>
+      <View style={styles.wrapper}>
+        <Spacer height={20} />
+        {children}
+        <Spacer height={20} />
+        <Button
+          type={ButtonTypes.PRIMARY}
+          title='Add'
+          onPress={() => SheetManager.show('add-item-sheet')}
+        />
+        <Spacer height={20} />
+      </View>
+    </SheetProvider>
   );
 };
 
