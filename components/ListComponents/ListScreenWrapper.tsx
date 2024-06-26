@@ -1,9 +1,8 @@
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Spacer from '../../baseComponents/Spacer';
 import Button from '../../baseComponents/Button';
 import { ButtonTypes } from '../../constants/buttonTypes';
-import { SheetManager, SheetProvider } from 'react-native-actions-sheet';
-import AddItem from '../AddItemComponents/AddItem';
+import { SheetManager } from 'react-native-actions-sheet';
 
 interface ListScreenWrapperProps {
   newItem: string;
@@ -15,19 +14,17 @@ const ListScreenWrapper = (props: ListScreenWrapperProps) => {
   const { children, newItem, setNewItem } = props;
 
   return (
-    <SheetProvider>
-      <View style={styles.wrapper}>
-        <Spacer height={20} />
-        {children}
-        <Spacer height={20} />
-        <Button
-          type={ButtonTypes.PRIMARY}
-          title='Add'
-          onPress={() => SheetManager.show('add-item-sheet')}
-        />
-        <Spacer height={20} />
-      </View>
-    </SheetProvider>
+    <View style={styles.wrapper}>
+      <Spacer height={20} />
+      {children}
+      <Spacer height={20} />
+      <Button
+        type={ButtonTypes.PRIMARY}
+        title='Add'
+        onPress={() => SheetManager.show('add-item-sheet')}
+      />
+      <Spacer height={20} />
+    </View>
   );
 };
 

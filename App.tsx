@@ -8,7 +8,6 @@ import { getFirestore } from 'firebase/firestore';
 import useAuth from './hooks/useAuth';
 import useUserStore from './state/user';
 import { SheetProvider } from 'react-native-actions-sheet';
-// import './sheets';
 import { setupSheets } from './sheets';
 
 const app = initializeApp(firebaseConfig);
