@@ -16,7 +16,7 @@ const CountButton = (props: CountButtonProps) => {
         <Ionicons name='chevron-up-circle' size={40} color='#6c63ff' />
       </Pressable>
       <View style={styles.textWrapper}>
-        <Text style={styles.count}>0</Text>
+        <Text style={styles.count}>{count}</Text>
       </View>
       <Pressable style={styles.textWrapper} onPress={decrement}>
         <Ionicons name='chevron-down-circle' size={40} color='#6c63ff' />
@@ -27,6 +27,7 @@ const CountButton = (props: CountButtonProps) => {
 
 const styles = StyleSheet.create({
   wrapper: {
+    flex: 1,
     flexDirection: 'row',
     height: 75,
     borderWidth: 1,

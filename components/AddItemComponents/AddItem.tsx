@@ -6,6 +6,8 @@ import Button from '../../baseComponents/Button';
 import { ButtonTypes } from '../../constants/buttonTypes';
 import Link from '../../baseComponents/Link';
 import CountButton from '../../baseComponents/CountButton';
+import DropdownMenu from '../../baseComponents/DropdownMenu';
+import { ValueType } from 'react-native-dropdown-picker';
 
 interface AddItemProps {
   title?: string;
@@ -14,6 +16,15 @@ interface AddItemProps {
 const AddItem = (props: AddItemProps) => {
   const { title = 'Add a New Item' } = props;
   const [newItem, setNewItem] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [dropdownValue, setDropdownValue] = useState<ValueType | null>(null);
+
+  //   const testItems = ['Each', 'Lbs', 'Kg', 'Oz', 'Qt', 'Ml', 'Gal', 'Gr'];
+  const testItems = [
+    { label: 'Each', value: 'each' },
+    { label: 'Lbs', value: 'lbs' },
+    { label: 'Kg', value: 'kg' },
+  ];
 
   return (
     <ActionSheet headerAlwaysVisible containerStyle={styles.container}>
@@ -29,8 +40,20 @@ const AddItem = (props: AddItemProps) => {
         autoCorrect={false}
         onChangeText={(input: string) => setNewItem(input)}
       />
-      <Spacer height={20} />
-      <CountButton count={1} increment={() => {}} decrement={() => {}} />
+      <Spacer height={40} />
+      <View style={{ flexDirection: 'row' }}>
+        <CountButton count={1} increment={() => {}} decrement={() => {}} />
+        <View style={{ width: 10 }} />
+        <View style={{ flex: 1 }}>
+          <DropdownMenu
+            isOpen={isDropdownOpen}
+            items={testItems}
+            value={dropdownValue}
+            setValue={setDropdownValue}
+            setOpen={() => setIsDropdownOpen(!isDropdownOpen)}
+          />
+        </View>
+      </View>
       <Spacer height={20} />
       <View style={styles.buttonContainer}>
         <Button
@@ -71,7 +94,7 @@ const styles = StyleSheet.create({
     color: '#6c63ff',
   },
   buttonContainer: {
-    marginTop: 'auto',
+    marginTop: 300,
     alignItems: 'center',
   },
 });
