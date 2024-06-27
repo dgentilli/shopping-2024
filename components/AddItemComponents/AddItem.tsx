@@ -10,10 +10,20 @@ import DropdownMenu from '../../baseComponents/DropdownMenu';
 import { ValueType } from 'react-native-dropdown-picker';
 import { unitsOfMeasure } from '../../constants/unitsOfMeasure';
 import { AddItemSheetProps } from '../../sheets';
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDocs,
+  updateDoc,
+} from 'firebase/firestore';
+import { db } from '../../App';
+import useAuth from '../../hooks/useAuth';
 
 const AddItem = (props: AddItemSheetProps) => {
-  const title = props.payload?.title;
-  const type = props.payload?.type;
+  const title = props.payload.title;
+  const type = props.payload.type;
+  const { currentUser } = useAuth();
   const [itemName, setItemName] = useState('');
   const [itemQuantity, setItemQuantity] = useState(1);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -23,9 +33,24 @@ const AddItem = (props: AddItemSheetProps) => {
   const [formError, setFormError] = useState('');
   const sheetTitle = `Add a ${title} item`;
 
-  const onPressSave = () => {
+  const onPressSave = async () => {
     if (!itemName) return setFormError('Enter an item!');
+    if (!currentUser) return setFormError('You must be logged in!');
+
     console.log({ itemName, itemQuantity, unitOfMeasure });
+    const householdsRef = collection(db, 'households');
+    const querySnapshot = await getDocs(householdsRef);
+    const userHousehold = querySnapshot.docs.find((doc) => {
+      const data = doc.data();
+      return data.householdData.userIds.includes(currentUser.uid);
+    });
+
+    if (!userHousehold) return;
+
+    const updateRef = doc(db, 'households', userHousehold.id);
+    await updateDoc(updateRef, {
+      [`lists.${type}`]: arrayUnion({ itemName, itemQuantity, unitOfMeasure }),
+    });
   };
 
   return (
