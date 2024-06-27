@@ -18,13 +18,14 @@ const AddItem = (props: AddItemProps) => {
   const [itemName, setItemName] = useState('');
   const [itemQuantity, setItemQuantity] = useState(1);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [dropdownValue, setDropdownValue] = useState<ValueType | null>(
+  const [unitOfMeasure, setUnitOfMeasure] = useState<ValueType | null>(
     unitsOfMeasure[0].value
   );
   const [formError, setFormError] = useState('');
 
   const onPressSave = () => {
     if (!itemName) return setFormError('Enter an item!');
+    console.log({ itemName, itemQuantity, unitOfMeasure });
   };
 
   return (
@@ -58,8 +59,8 @@ const AddItem = (props: AddItemProps) => {
           <DropdownMenu
             isOpen={isDropdownOpen}
             items={unitsOfMeasure}
-            value={dropdownValue}
-            setValue={setDropdownValue}
+            value={unitOfMeasure}
+            setValue={setUnitOfMeasure}
             setOpen={() => setIsDropdownOpen(!isDropdownOpen)}
           />
         </View>

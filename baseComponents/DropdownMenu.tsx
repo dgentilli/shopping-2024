@@ -1,4 +1,5 @@
 import DropDownPicker, {
+  DropDownPickerProps,
   ItemType,
   ValueType,
 } from 'react-native-dropdown-picker';
@@ -8,7 +9,8 @@ interface DropdownMenuProps<T extends ValueType> {
   isOpen: boolean;
   value: T | null;
   items: ItemType<T>[];
-  setValue: (val: ValueType | null) => void;
+  // setValue: (val: ValueType | null) => void;
+  setValue: DropDownPickerProps<T>['setValue'];
   setOpen: () => void;
 }
 
