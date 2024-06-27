@@ -16,14 +16,7 @@ const GroceriesScreenContainer = () => {
     console.log('type recd by deleteItem function', type);
   };
 
-  return (
-    <MemoizedGroceriesScreenUI
-      data={data}
-      newItem={newItem}
-      setNewItem={setNewItem}
-      deleteItem={deleteItem}
-    />
-  );
+  return <MemoizedGroceriesScreenUI data={data} deleteItem={deleteItem} />;
 };
 
 export default GroceriesScreenContainer;

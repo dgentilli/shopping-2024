@@ -5,13 +5,13 @@ import { ButtonTypes } from '../../constants/buttonTypes';
 import { SheetManager } from 'react-native-actions-sheet';
 
 interface ListScreenWrapperProps {
-  newItem: string;
   children: any;
-  setNewItem: (input: string) => void;
+  title: string;
+  type: 'grocery' | 'pharmacy' | 'private';
 }
 
 const ListScreenWrapper = (props: ListScreenWrapperProps) => {
-  const { children, newItem, setNewItem } = props;
+  const { children, title, type } = props;
 
   return (
     <View style={styles.wrapper}>
@@ -21,7 +21,11 @@ const ListScreenWrapper = (props: ListScreenWrapperProps) => {
       <Button
         type={ButtonTypes.PRIMARY}
         title='Add'
-        onPress={() => SheetManager.show('add-item-sheet')}
+        onPress={() =>
+          SheetManager.show('add-item-sheet', {
+            payload: { title, type },
+          })
+        }
       />
       <Spacer height={20} />
     </View>

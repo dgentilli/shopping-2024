@@ -9,12 +9,11 @@ import CountButton from '../../baseComponents/CountButton';
 import DropdownMenu from '../../baseComponents/DropdownMenu';
 import { ValueType } from 'react-native-dropdown-picker';
 import { unitsOfMeasure } from '../../constants/unitsOfMeasure';
-interface AddItemProps {
-  title?: string;
-}
+import { AddItemSheetProps } from '../../sheets';
 
-const AddItem = (props: AddItemProps) => {
-  const { title = 'Add a New Item' } = props;
+const AddItem = (props: AddItemSheetProps) => {
+  const title = props.payload?.title;
+  const type = props.payload?.type;
   const [itemName, setItemName] = useState('');
   const [itemQuantity, setItemQuantity] = useState(1);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -22,6 +21,7 @@ const AddItem = (props: AddItemProps) => {
     unitsOfMeasure[0].value
   );
   const [formError, setFormError] = useState('');
+  const sheetTitle = `Add a ${title} item`;
 
   const onPressSave = () => {
     if (!itemName) return setFormError('Enter an item!');
@@ -31,7 +31,7 @@ const AddItem = (props: AddItemProps) => {
   return (
     <ActionSheet headerAlwaysVisible containerStyle={styles.container}>
       <Spacer height={40} />
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title}>{sheetTitle}</Text>
       <Spacer height={20} />
       <TextInput
         style={styles.input}
