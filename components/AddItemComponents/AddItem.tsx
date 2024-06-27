@@ -8,23 +8,24 @@ import Link from '../../baseComponents/Link';
 import CountButton from '../../baseComponents/CountButton';
 import DropdownMenu from '../../baseComponents/DropdownMenu';
 import { ValueType } from 'react-native-dropdown-picker';
-
+import { unitsOfMeasure } from '../../constants/unitsOfMeasure';
 interface AddItemProps {
   title?: string;
 }
 
 const AddItem = (props: AddItemProps) => {
   const { title = 'Add a New Item' } = props;
-  const [newItem, setNewItem] = useState('');
+  const [itemName, setItemName] = useState('');
+  const [itemQuantity, setItemQuantity] = useState(1);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [dropdownValue, setDropdownValue] = useState<ValueType | null>(null);
+  const [dropdownValue, setDropdownValue] = useState<ValueType | null>(
+    unitsOfMeasure[0].value
+  );
+  const [formError, setFormError] = useState('');
 
-  //   const testItems = ['Each', 'Lbs', 'Kg', 'Oz', 'Qt', 'Ml', 'Gal', 'Gr'];
-  const testItems = [
-    { label: 'Each', value: 'each' },
-    { label: 'Lbs', value: 'lbs' },
-    { label: 'Kg', value: 'kg' },
-  ];
+  const onPressSave = () => {
+    if (!itemName) return setFormError('Enter an item!');
+  };
 
   return (
     <ActionSheet headerAlwaysVisible containerStyle={styles.container}>
@@ -33,21 +34,30 @@ const AddItem = (props: AddItemProps) => {
       <Spacer height={20} />
       <TextInput
         style={styles.input}
-        value={newItem}
+        value={itemName}
         placeholder='Add an Item'
         placeholderTextColor='#3f3d56'
         autoCapitalize='words'
         autoCorrect={false}
-        onChangeText={(input: string) => setNewItem(input)}
+        onChangeText={(input: string) => setItemName(input)}
+        onFocus={() => setFormError('')}
       />
       <Spacer height={40} />
       <View style={{ flexDirection: 'row' }}>
-        <CountButton count={1} increment={() => {}} decrement={() => {}} />
+        <CountButton
+          count={itemQuantity}
+          increment={() => {
+            setItemQuantity(itemQuantity + 1);
+          }}
+          decrement={() => {
+            itemQuantity > 1 && setItemQuantity(itemQuantity - 1);
+          }}
+        />
         <View style={{ width: 10 }} />
         <View style={{ flex: 1 }}>
           <DropdownMenu
             isOpen={isDropdownOpen}
-            items={testItems}
+            items={unitsOfMeasure}
             value={dropdownValue}
             setValue={setDropdownValue}
             setOpen={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -56,10 +66,11 @@ const AddItem = (props: AddItemProps) => {
       </View>
       <Spacer height={20} />
       <View style={styles.buttonContainer}>
+        <Text style={styles.errorText}>{formError}</Text>
         <Button
           type={ButtonTypes.PRIMARY}
           title='Save Item'
-          onPress={() => {}}
+          onPress={onPressSave}
         />
         <Spacer height={20} />
         <Link
@@ -94,8 +105,13 @@ const styles = StyleSheet.create({
     color: '#6c63ff',
   },
   buttonContainer: {
-    marginTop: 300,
+    marginTop: 250,
     alignItems: 'center',
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 10,
+    fontSize: 16,
   },
 });
 
