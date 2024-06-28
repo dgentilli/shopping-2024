@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import GroceriesScreenUI from './GroceriesScreenUI';
-import { groceriesMockData } from '../../mockData/groceries';
-import { ListItemType } from '../../constants/listItemType';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { collection, doc, getDocs, onSnapshot } from 'firebase/firestore';
 import { db } from '../../App';
 import useAuth from '../../hooks/useAuth';
 
@@ -26,18 +24,23 @@ const GroceriesScreenContainer = () => {
 
       if (!userHousehold) return;
 
-      const docRef = doc(db, 'households', userHousehold.id);
-      const docSnap = await getDoc(docRef);
+      const unsub = onSnapshot(
+        doc(db, 'households', userHousehold.id),
+        (doc) => {
+          if (doc.exists()) {
+            const householdData = doc.data();
+            console.log('!!!!!! householdData', householdData);
+            const listData = householdData.lists?.grocery || [];
+            setData(listData);
+          } else {
+            setError(
+              'There was a problem retrieving your list. Please try again'
+            );
+          }
+        }
+      );
 
-      console.log('docSnap from fetch', docSnap);
-
-      if (docSnap.exists()) {
-        const householdData = docSnap.data();
-        const groceryList = householdData.lists?.grocery || [];
-        setData(groceryList);
-      } else {
-        setError('There was a problem retrieving your list. Please try again');
-      }
+      return () => unsub();
     };
 
     fetchData();
