@@ -1,25 +1,25 @@
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { ListItemType } from '../../constants/listItemType';
 
 interface ListItemProps extends ListItemType {
-  deleteItem: (id: string, type: 'grocery' | 'pharmacy') => void;
+  deleteItem: (id: string) => void;
 }
 
 const ListItem = (props: ListItemProps) => {
-  const { id, itemName, itemQuantity, isChecked, type, deleteItem } = props;
+  const { id, itemName, itemQuantity, unitOfMeasure, deleteItem } = props;
 
   return (
-    <Pressable
-      key={id}
-      style={({ pressed }) => [
-        { opacity: pressed ? 0.5 : 1 },
-        styles.listItemWrapper,
-      ]}
-      onLongPress={() => deleteItem(id, type)}
-    >
-      <Text style={styles.textStyle}>{itemName}</Text>
-      <Text style={styles.textStyle}>{itemQuantity}</Text>
-    </Pressable>
+    <View key={id} style={styles.listItemWrapper}>
+      <Text style={[styles.textStyle, { flex: 1 }]}>{itemName}</Text>
+      <View style={styles.middleColumn}>
+        <Text style={styles.textStyle}>{`${itemQuantity} `}</Text>
+        <Text style={styles.textStyle}>{unitOfMeasure}</Text>
+      </View>
+      <Pressable style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}>
+        <Ionicons name='trash' size={24} color='red' />
+      </Pressable>
+    </View>
   );
 };
 
@@ -34,6 +34,11 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: 20,
     color: '#2f2e41',
+  },
+  middleColumn: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
 });
 
