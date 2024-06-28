@@ -7,7 +7,7 @@ import ParagraphText from '../../baseComponents/ParagraphText';
 interface ListProps {
   data: ListItemType[];
   error: string;
-  deleteItem: (id: string) => void;
+  deleteItem: (item: ListItemType) => void;
 }
 
 const List = (props: ListProps) => {

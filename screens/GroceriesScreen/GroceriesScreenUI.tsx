@@ -5,7 +5,7 @@ import { ListItemType } from '../../constants/listItemType';
 interface GroceriesScreenProps {
   data: ListItemType[];
   error: string;
-  deleteItem: (id: string) => void;
+  deleteItem: (item: ListItemType) => void;
 }
 
 const GroceriesScreenUI = (props: GroceriesScreenProps) => {

@@ -3,7 +3,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { ListItemType } from '../../constants/listItemType';
 
 interface ListItemProps extends ListItemType {
-  deleteItem: (id: string) => void;
+  deleteItem: (item: ListItemType) => void;
 }
 
 const ListItem = (props: ListItemProps) => {
@@ -16,7 +16,12 @@ const ListItem = (props: ListItemProps) => {
         <Text style={styles.textStyle}>{`${itemQuantity} `}</Text>
         <Text style={styles.textStyle}>{unitOfMeasure}</Text>
       </View>
-      <Pressable style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}>
+      <Pressable
+        style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
+        onPress={() =>
+          deleteItem({ id, itemName, itemQuantity, unitOfMeasure })
+        }
+      >
         <Ionicons name='trash' size={24} color='red' />
       </Pressable>
     </View>

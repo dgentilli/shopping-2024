@@ -5,7 +5,7 @@ import ListScreenWrapper from '../../components/ListComponents/ListScreenWrapper
 interface PharmacyScreenProps {
   data: ListItemType[];
   error: string;
-  deleteItem: (id: string) => void;
+  deleteItem: (item: ListItemType) => void;
 }
 
 const PharmacyScreenUI = (props: PharmacyScreenProps) => {

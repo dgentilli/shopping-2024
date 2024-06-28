@@ -1,6 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import GroceriesScreenUI from './GroceriesScreenUI';
-import { collection, doc, getDocs, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDocs,
+  onSnapshot,
+  updateDoc,
+  arrayRemove,
+} from 'firebase/firestore';
 import { db } from '../../App';
 import useAuth from '../../hooks/useAuth';
 import { ListItemType } from '../../constants/listItemType';
@@ -11,6 +18,7 @@ const GroceriesScreenContainer = () => {
   const { currentUser } = useAuth();
   const [data, setData] = useState<ListItemType[]>([]);
   const [error, setError] = useState('');
+  const [householdId, setHouseholdId] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +32,7 @@ const GroceriesScreenContainer = () => {
       });
 
       if (!userHousehold) return;
+      setHouseholdId(userHousehold.id);
 
       const unsub = onSnapshot(
         doc(db, 'households', userHousehold.id),
@@ -46,11 +55,17 @@ const GroceriesScreenContainer = () => {
     fetchData();
   }, [currentUser]);
 
-  const deleteItem = (id: string) => {
-    // You'll need to make an API call eventually
-    // For now...
-    console.log('id recd by deleteItem function', id);
-  };
+  const deleteItem = useCallback(async (item: ListItemType) => {
+    const householdRef = doc(db, 'households', householdId);
+
+    try {
+      await updateDoc(householdRef, {
+        'lists.grocery': arrayRemove(item),
+      });
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  }, []);
 
   return (
     <MemoizedGroceriesScreenUI

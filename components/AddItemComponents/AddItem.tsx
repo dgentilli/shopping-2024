@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import ActionSheet, { SheetManager } from 'react-native-actions-sheet';
+import { v4 as uuidv4 } from 'uuid';
 import Spacer from '../../baseComponents/Spacer';
 import Button from '../../baseComponents/Button';
 import { ButtonTypes } from '../../constants/buttonTypes';
@@ -48,7 +49,12 @@ const AddItem = (props: AddItemSheetProps) => {
 
     const updateRef = doc(db, 'households', userHousehold.id);
     await updateDoc(updateRef, {
-      [`lists.${type}`]: arrayUnion({ itemName, itemQuantity, unitOfMeasure }),
+      [`lists.${type}`]: arrayUnion({
+        id: uuidv4(),
+        itemName,
+        itemQuantity,
+        unitOfMeasure,
+      }),
     });
     SheetManager.hide('add-item-sheet');
   };
