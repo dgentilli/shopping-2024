@@ -37,7 +37,6 @@ const AddItem = (props: AddItemSheetProps) => {
     if (!itemName) return setFormError('Enter an item!');
     if (!currentUser) return setFormError('You must be logged in!');
 
-    console.log({ itemName, itemQuantity, unitOfMeasure });
     const householdsRef = collection(db, 'households');
     const querySnapshot = await getDocs(householdsRef);
     const userHousehold = querySnapshot.docs.find((doc) => {
@@ -51,6 +50,7 @@ const AddItem = (props: AddItemSheetProps) => {
     await updateDoc(updateRef, {
       [`lists.${type}`]: arrayUnion({ itemName, itemQuantity, unitOfMeasure }),
     });
+    SheetManager.hide('add-item-sheet');
   };
 
   return (
