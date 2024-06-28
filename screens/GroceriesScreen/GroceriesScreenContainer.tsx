@@ -55,17 +55,20 @@ const GroceriesScreenContainer = () => {
     fetchData();
   }, [currentUser]);
 
-  const deleteItem = useCallback(async (item: ListItemType) => {
-    const householdRef = doc(db, 'households', householdId);
+  const deleteItem = useCallback(
+    async (item: ListItemType) => {
+      const householdRef = doc(db, 'households', householdId);
 
-    try {
-      await updateDoc(householdRef, {
-        'lists.grocery': arrayRemove(item),
-      });
-    } catch (error) {
-      console.error('Error deleting item:', error);
-    }
-  }, []);
+      try {
+        await updateDoc(householdRef, {
+          'lists.grocery': arrayRemove(item),
+        });
+      } catch (error) {
+        console.error('Error deleting item:', error);
+      }
+    },
+    [householdId]
+  );
 
   return (
     <MemoizedGroceriesScreenUI
