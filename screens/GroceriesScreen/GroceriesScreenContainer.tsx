@@ -3,12 +3,13 @@ import GroceriesScreenUI from './GroceriesScreenUI';
 import { collection, doc, getDocs, onSnapshot } from 'firebase/firestore';
 import { db } from '../../App';
 import useAuth from '../../hooks/useAuth';
+import { ListItemType } from '../../constants/listItemType';
 
 const MemoizedGroceriesScreenUI = React.memo(GroceriesScreenUI);
 
 const GroceriesScreenContainer = () => {
   const { currentUser } = useAuth();
-  const [data, setData] = useState<any>([]);
+  const [data, setData] = useState<ListItemType[]>([]);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -29,7 +30,6 @@ const GroceriesScreenContainer = () => {
         (doc) => {
           if (doc.exists()) {
             const householdData = doc.data();
-            console.log('!!!!!! householdData', householdData);
             const listData = householdData.lists?.grocery || [];
             setData(listData);
           } else {
