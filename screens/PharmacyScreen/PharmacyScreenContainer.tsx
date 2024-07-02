@@ -11,14 +11,15 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { db } from '../../App';
+import useHousehold from '../../hooks/useHousehold';
 
 const MemoizedPharmacyScreenUI = React.memo(PharmacyScreenUI);
 
 const PharmacyScreenContainer = () => {
   const { currentUser } = useAuth();
+  const { householDocId } = useHousehold(currentUser?.uid || '');
   const [data, setData] = useState<ListItemType[]>([]);
   const [error, setError] = useState('');
-  const [householdId, setHouseholdId] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,33 +33,30 @@ const PharmacyScreenContainer = () => {
       });
 
       if (!userHousehold) return;
-      setHouseholdId(userHousehold.id);
+      if (!householDocId) return;
 
-      const unsub = onSnapshot(
-        doc(db, 'households', userHousehold.id),
-        (doc) => {
-          if (doc.exists()) {
-            const householdData = doc.data();
-            const listData = householdData.lists?.pharmacy || [];
-            setData(listData);
-          } else {
-            setError(
-              'There was a problem retrieving your list. Please try again'
-            );
-          }
+      const unsub = onSnapshot(doc(db, 'households', householDocId), (doc) => {
+        if (doc.exists()) {
+          const householdData = doc.data();
+          const listData = householdData.lists?.pharmacy || [];
+          setData(listData);
+        } else {
+          setError(
+            'There was a problem retrieving your list. Please try again'
+          );
         }
-      );
+      });
 
       return () => unsub();
     };
 
     fetchData();
-  }, [currentUser]);
+  }, [currentUser, householDocId]);
 
   const deleteItem = useCallback(
     async (item: ListItemType) => {
       console.log('id recd by deleteItem function', item);
-      const householdRef = doc(db, 'households', householdId);
+      const householdRef = doc(db, 'households', householDocId);
 
       try {
         await updateDoc(householdRef, {
@@ -68,7 +66,7 @@ const PharmacyScreenContainer = () => {
         console.error('Error deleting item:', error);
       }
     },
-    [householdId]
+    [householDocId]
   );
 
   return (

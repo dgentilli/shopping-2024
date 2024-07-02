@@ -4,6 +4,7 @@ import { db } from '../App';
 
 const useHousehold = (userId: string) => {
   const [household, setHousehold] = useState<any>(null);
+  const [householDocId, setHouseholdDocId] = useState('');
   const [householdError, setHouseholdError] = useState('');
 
   useEffect(() => {
@@ -15,10 +16,11 @@ const useHousehold = (userId: string) => {
       try {
         const householdsRef = collection(db, 'households');
         const querySnapshot = await getDocs(householdsRef);
-        const userHousehold = querySnapshot.docs.find((doc) => {
+        querySnapshot.docs.find((doc) => {
           const data = doc.data();
           if (data.householdData.userIds.includes(userId)) {
             setHousehold(data);
+            setHouseholdDocId(doc.id);
           } else {
             setHouseholdError('No household found!');
           }
@@ -32,7 +34,7 @@ const useHousehold = (userId: string) => {
     getHousehold();
   }, [userId]);
 
-  return { household, householdError };
+  return { household, householDocId, householdError };
 };
 
 export default useHousehold;

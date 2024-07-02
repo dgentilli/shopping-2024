@@ -11,14 +11,15 @@ import {
 import { db } from '../../App';
 import useAuth from '../../hooks/useAuth';
 import { ListItemType } from '../../constants/listItemType';
+import useHousehold from '../../hooks/useHousehold';
 
 const MemoizedGroceriesScreenUI = React.memo(GroceriesScreenUI);
 
 const GroceriesScreenContainer = () => {
   const { currentUser } = useAuth();
+  const { householDocId } = useHousehold(currentUser?.uid || '');
   const [data, setData] = useState<ListItemType[]>([]);
   const [error, setError] = useState('');
-  const [householdId, setHouseholdId] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,32 +33,29 @@ const GroceriesScreenContainer = () => {
       });
 
       if (!userHousehold) return;
-      setHouseholdId(userHousehold.id);
+      if (!householDocId) return;
 
-      const unsub = onSnapshot(
-        doc(db, 'households', userHousehold.id),
-        (doc) => {
-          if (doc.exists()) {
-            const householdData = doc.data();
-            const listData = householdData.lists?.grocery || [];
-            setData(listData);
-          } else {
-            setError(
-              'There was a problem retrieving your list. Please try again'
-            );
-          }
+      const unsub = onSnapshot(doc(db, 'households', householDocId), (doc) => {
+        if (doc.exists()) {
+          const householdData = doc.data();
+          const listData = householdData.lists?.grocery || [];
+          setData(listData);
+        } else {
+          setError(
+            'There was a problem retrieving your list. Please try again'
+          );
         }
-      );
+      });
 
       return () => unsub();
     };
 
     fetchData();
-  }, [currentUser]);
+  }, [currentUser, householDocId]);
 
   const deleteItem = useCallback(
     async (item: ListItemType) => {
-      const householdRef = doc(db, 'households', householdId);
+      const householdRef = doc(db, 'households', householDocId);
 
       try {
         await updateDoc(householdRef, {
@@ -67,7 +65,7 @@ const GroceriesScreenContainer = () => {
         console.error('Error deleting item:', error);
       }
     },
-    [householdId]
+    [householDocId]
   );
 
   return (
