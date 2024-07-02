@@ -5,11 +5,9 @@ import { db } from '../App';
 const useHousehold = (userId: string) => {
   const [household, setHousehold] = useState<any>(null);
   const [householdError, setHouseholdError] = useState('');
-  console.log('household from hook', household);
 
   useEffect(() => {
     const getHousehold = async () => {
-      console.log('getHousehold runs!!!');
       if (!userId) {
         setHouseholdError('You must be logged in!');
         return;
@@ -19,20 +17,14 @@ const useHousehold = (userId: string) => {
         const querySnapshot = await getDocs(householdsRef);
         const userHousehold = querySnapshot.docs.find((doc) => {
           const data = doc.data();
-          return data.householdData.userIds.includes(userId);
+          if (data.householdData.userIds.includes(userId)) {
+            setHousehold(data);
+          } else {
+            setHouseholdError('No household found!');
+          }
         });
-
-        console.log('userHOusehold from hook', userHousehold);
-
-        if (!userHousehold) {
-          console.error('no userHousehold from hook');
-          setHouseholdError('You must be part of a household');
-          return;
-        } else {
-          setHousehold(userHousehold);
-        }
       } catch (error) {
-        console.log('error from catch block', error);
+        console.log('error from useHousehold catch block', error);
         setHouseholdError('Something went wrong!');
       }
     };

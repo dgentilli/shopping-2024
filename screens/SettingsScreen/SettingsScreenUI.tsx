@@ -1,25 +1,21 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import * as Clipboard from 'expo-clipboard';
 import Button from '../../baseComponents/Button';
 import { ButtonTypes } from '../../constants/buttonTypes';
 import Spacer from '../../baseComponents/Spacer';
 import SettingsRow from '../../components/SettingsComponents/SettingsRow';
 import { truncateText } from '../../helpers/stringHelpers';
-import useHouseholdStore from '../../state/household';
 
 interface SettingsScreenProps {
+  householdShareCode: string | undefined;
   onPressLogout: () => void;
+  copyToClipboard: () => void;
 }
 
 const SettingsScreenUI = (props: SettingsScreenProps) => {
-  const { onPressLogout } = props;
-  const { householdShareCode } = useHouseholdStore();
-  const truncatedText = truncateText(householdShareCode, 20);
+  const { householdShareCode, onPressLogout, copyToClipboard } = props;
 
-  const copyToClipboard = async () => {
-    await Clipboard.setStringAsync(householdShareCode);
-  };
+  const truncatedText = truncateText(householdShareCode, 20);
 
   return (
     <View style={styles.container}>
