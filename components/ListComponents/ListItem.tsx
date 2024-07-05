@@ -11,7 +11,9 @@ const ListItem = (props: ListItemProps) => {
 
   return (
     <View key={id} style={styles.listItemWrapper}>
-      <Text style={[styles.textStyle, { flex: 1 }]}>{itemName}</Text>
+      <Text style={[styles.textStyle, styles.itemNameText, { flex: 1 }]}>
+        {itemName}
+      </Text>
       <View style={styles.middleColumn}>
         <Text style={styles.textStyle}>{`${itemQuantity} `}</Text>
         <Text style={styles.textStyle}>{unitOfMeasure}</Text>
@@ -39,6 +41,10 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: 20,
     color: '#2f2e41',
+  },
+  itemNameText: {
+    color: '#6c63ff',
+    fontWeight: '500',
   },
   middleColumn: {
     flex: 1,

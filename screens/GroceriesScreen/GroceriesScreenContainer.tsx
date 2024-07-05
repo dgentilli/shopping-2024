@@ -1,13 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import GroceriesScreenUI from './GroceriesScreenUI';
-import {
-  collection,
-  doc,
-  getDocs,
-  onSnapshot,
-  updateDoc,
-  arrayRemove,
-} from 'firebase/firestore';
+import { doc, onSnapshot, updateDoc, arrayRemove } from 'firebase/firestore';
 import { db } from '../../App';
 import useAuth from '../../hooks/useAuth';
 import { ListItemType } from '../../constants/listItemType';
@@ -17,41 +10,41 @@ const MemoizedGroceriesScreenUI = React.memo(GroceriesScreenUI);
 
 const GroceriesScreenContainer = () => {
   const { currentUser } = useAuth();
-  const { householDocId } = useHousehold(currentUser?.uid || '');
+  const { householDocId, household } = useHousehold(currentUser?.uid || '');
   const [data, setData] = useState<ListItemType[]>([]);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!currentUser) return;
+    setError('');
+    let unsub: () => void;
 
-      const householdsRef = collection(db, 'households');
-      const querySnapshot = await getDocs(householdsRef);
-      const userHousehold = querySnapshot.docs.find((doc) => {
-        const data = doc.data();
-        return data.householdData.userIds.includes(currentUser.uid);
-      });
+    if (!currentUser || !householDocId || !household) return;
 
-      if (!userHousehold) return;
-      if (!householDocId) return;
-
-      const unsub = onSnapshot(doc(db, 'households', householDocId), (doc) => {
+    const fetchData = () => {
+      unsub = onSnapshot(doc(db, 'households', householDocId), (doc) => {
         if (doc.exists()) {
           const householdData = doc.data();
           const listData = householdData.lists?.grocery || [];
           setData(listData);
+          setIsLoading(false);
         } else {
           setError(
             'There was a problem retrieving your list. Please try again'
           );
+          setIsLoading(false);
         }
       });
-
-      return () => unsub();
     };
 
     fetchData();
-  }, [currentUser, householDocId]);
+
+    return () => {
+      if (unsub) {
+        unsub();
+      }
+    };
+  }, [currentUser, householDocId, household]);
 
   const deleteItem = useCallback(
     async (item: ListItemType) => {
@@ -72,6 +65,7 @@ const GroceriesScreenContainer = () => {
     <MemoizedGroceriesScreenUI
       data={data}
       error={error}
+      isLoading={isLoading}
       deleteItem={deleteItem}
     />
   );
