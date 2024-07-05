@@ -5,15 +5,21 @@ import { ListItemType } from '../../constants/listItemType';
 interface GroceriesScreenProps {
   data: ListItemType[];
   error: string;
+  isLoading: boolean;
   deleteItem: (item: ListItemType) => void;
 }
 
 const GroceriesScreenUI = (props: GroceriesScreenProps) => {
-  const { data, error, deleteItem } = props;
+  const { data, error, isLoading, deleteItem } = props;
 
   return (
     <ListScreenWrapper title='Grocery' type='grocery'>
-      <List data={data} error={error} deleteItem={deleteItem} />
+      <List
+        data={data}
+        error={error}
+        isLoading={isLoading}
+        deleteItem={deleteItem}
+      />
     </ListScreenWrapper>
   );
 };
