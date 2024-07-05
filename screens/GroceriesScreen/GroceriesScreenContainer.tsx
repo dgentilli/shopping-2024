@@ -22,19 +22,24 @@ const GroceriesScreenContainer = () => {
     if (!currentUser || !householDocId || !household) return;
 
     const fetchData = () => {
-      unsub = onSnapshot(doc(db, 'households', householDocId), (doc) => {
-        if (doc.exists()) {
-          const householdData = doc.data();
-          const listData = householdData.lists?.grocery || [];
-          setData(listData);
-          setIsLoading(false);
-        } else {
-          setError(
-            'There was a problem retrieving your list. Please try again'
-          );
-          setIsLoading(false);
-        }
-      });
+      try {
+        unsub = onSnapshot(doc(db, 'households', householDocId), (doc) => {
+          if (doc.exists()) {
+            const householdData = doc.data();
+            const listData = householdData.lists?.grocery || [];
+            setData(listData);
+            setIsLoading(false);
+          } else {
+            setError(
+              'There was a problem retrieving your list. Please try again'
+            );
+            setIsLoading(false);
+          }
+        });
+      } catch (error: any) {
+        console.error(error);
+        setError('There was a problem retrieving your list. Please try again');
+      }
     };
 
     fetchData();
