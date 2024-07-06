@@ -5,15 +5,22 @@ import { ButtonTypes } from '../../constants/buttonTypes';
 import Spacer from '../../baseComponents/Spacer';
 import SettingsRow from '../../components/SettingsComponents/SettingsRow';
 import { truncateText } from '../../helpers/stringHelpers';
+import Link from '../../baseComponents/Link';
 
 interface SettingsScreenProps {
   householdShareCode: string | undefined;
   onPressLogout: () => void;
   copyToClipboard: () => void;
+  onPressPrivateList: () => void;
 }
 
 const SettingsScreenUI = (props: SettingsScreenProps) => {
-  const { householdShareCode, onPressLogout, copyToClipboard } = props;
+  const {
+    householdShareCode,
+    onPressLogout,
+    copyToClipboard,
+    onPressPrivateList,
+  } = props;
 
   const truncatedText = truncateText(householdShareCode, 20);
 
@@ -30,8 +37,8 @@ const SettingsScreenUI = (props: SettingsScreenProps) => {
         </Pressable>
       </SettingsRow>
       <SettingsRow>
-        <Text style={styles.rowTitleText}>Theme</Text>
-        <Text>Light</Text>
+        <Text style={styles.rowTitleText}>My Private List</Text>
+        <Link text='Go To List' onPress={onPressPrivateList} />
       </SettingsRow>
       <Spacer height={25} />
       <Button

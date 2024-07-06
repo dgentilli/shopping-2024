@@ -9,6 +9,7 @@ import useAuth from './hooks/useAuth';
 import useUserStore from './state/user';
 import { SheetProvider } from 'react-native-actions-sheet';
 import { setupSheets } from './sheets';
+import BottomTabNavigator from './navigation/BottomTabNavigator';
 
 const app = initializeApp(firebaseConfig);
 
@@ -25,7 +26,7 @@ export default function App() {
       <NavigationContainer>
         <SafeAreaProvider>
           {currentUser && isSignupComplete ? (
-            <MainNavigator />
+            <BottomTabNavigator />
           ) : (
             <AuthNavigator />
           )}
