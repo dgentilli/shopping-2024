@@ -4,7 +4,6 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import GroceriesScreenContainer from '../screens/GroceriesScreen/GroceriesScreenContainer';
 import PharmacyScreenContainer from '../screens/PharmacyScreen/PharmacyScreenContainer';
 import SettingsScreenContainer from '../screens/SettingsScreen/SettingsScreenContainer';
-import MainNavigator from './MainNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,8 +42,8 @@ const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name='SettingsStack'
-        component={MainNavigator}
+        name='Settings'
+        component={SettingsScreenContainer}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
