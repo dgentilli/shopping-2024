@@ -1,10 +1,26 @@
-import { View, Text } from 'react-native';
+import ListScreenWrapper from '../../components/ListComponents/ListScreenWrapper';
+import List from '../../components/ListComponents/List';
+import { ListItemType } from '../../constants/listItemType';
 
-const PrivateListScreenUI = () => {
+interface PrivateListScreenProps {
+  data: ListItemType[];
+  error: string;
+  isLoading: boolean;
+  deleteItem: (item: ListItemType) => void;
+}
+
+const PrivateListScreenUI = (props: PrivateListScreenProps) => {
+  const { data, error, isLoading, deleteItem } = props;
+
   return (
-    <View>
-      <Text>PrivateListScreenUI</Text>
-    </View>
+    <ListScreenWrapper title='My Stuff' type='private'>
+      <List
+        data={data}
+        error={error}
+        isLoading={isLoading}
+        deleteItem={deleteItem}
+      />
+    </ListScreenWrapper>
   );
 };
 

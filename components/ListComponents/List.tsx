@@ -25,7 +25,7 @@ const List = (props: ListProps) => {
       return <ParagraphText>{error}</ParagraphText>;
     }
 
-    if (data.length === 0) {
+    if (!data || data.length === 0) {
       return <EmptyList />;
     }
 
