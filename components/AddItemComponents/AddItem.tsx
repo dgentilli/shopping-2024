@@ -1,63 +1,32 @@
-import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import ActionSheet, { SheetManager } from 'react-native-actions-sheet';
-import { v4 as uuidv4 } from 'uuid';
 import Spacer from '../../baseComponents/Spacer';
 import Button from '../../baseComponents/Button';
 import { ButtonTypes } from '../../constants/buttonTypes';
 import Link from '../../baseComponents/Link';
 import CountButton from '../../baseComponents/CountButton';
 import DropdownMenu from '../../baseComponents/DropdownMenu';
-import { ValueType } from 'react-native-dropdown-picker';
 import { unitsOfMeasure } from '../../constants/unitsOfMeasure';
 import { AddItemSheetProps } from '../../sheets';
-import {
-  arrayUnion,
-  collection,
-  doc,
-  getDocs,
-  updateDoc,
-} from 'firebase/firestore';
-import { db } from '../../App';
-import useAuth from '../../hooks/useAuth';
+import useAddItem from '../../hooks/useAddItem';
 
 const AddItem = (props: AddItemSheetProps) => {
   const title = props.payload.title;
   const type = props.payload.type;
-  const { currentUser } = useAuth();
-  const [itemName, setItemName] = useState('');
-  const [itemQuantity, setItemQuantity] = useState(1);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [unitOfMeasure, setUnitOfMeasure] = useState<ValueType | null>(
-    unitsOfMeasure[0].value
-  );
-  const [formError, setFormError] = useState('');
   const sheetTitle = `Add a ${title} item`;
-
-  const onPressSave = async () => {
-    if (!itemName) return setFormError('Enter an item!');
-    if (!currentUser) return setFormError('You must be logged in!');
-
-    const householdsRef = collection(db, 'households');
-    const querySnapshot = await getDocs(householdsRef);
-    const userHousehold = querySnapshot.docs.find((doc) => {
-      const data = doc.data();
-      return data.householdData.userIds.includes(currentUser.uid);
-    });
-
-    if (!userHousehold) return;
-
-    const updateRef = doc(db, 'households', userHousehold.id);
-    await updateDoc(updateRef, {
-      [`lists.${type}`]: arrayUnion({
-        id: uuidv4(),
-        itemName,
-        itemQuantity,
-        unitOfMeasure,
-      }),
-    });
-    SheetManager.hide('add-item-sheet');
-  };
+  const {
+    itemName,
+    itemQuantity,
+    unitOfMeasure,
+    isDropdownOpen,
+    formError,
+    setItemName,
+    setItemQuantity,
+    setUnitOfMeasure,
+    setIsDropdownOpen,
+    setFormError,
+    addHouseholdItem,
+  } = useAddItem({ type });
 
   return (
     <ActionSheet headerAlwaysVisible containerStyle={styles.container}>
@@ -102,7 +71,7 @@ const AddItem = (props: AddItemSheetProps) => {
         <Button
           type={ButtonTypes.PRIMARY}
           title='Save Item'
-          onPress={onPressSave}
+          onPress={addHouseholdItem}
         />
         <Spacer height={20} />
         <Link
