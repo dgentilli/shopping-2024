@@ -12,7 +12,6 @@ const PrivateListScreenContainer = () => {
   const [data, setData] = useState<ListItemType[]>([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  console.log('currentUUUUSER', currentUser);
 
   const deleteItem = useCallback(
     async (item: ListItemType) => {
@@ -41,12 +40,10 @@ const PrivateListScreenContainer = () => {
     }
 
     const fetchData = () => {
-      console.log('fetchData runs@@@');
       try {
         unsub = onSnapshot(doc(db, 'users', currentUser.uid), (doc) => {
           if (doc.exists()) {
             const userData = doc.data();
-            console.log('userData from private list', userData);
             const listData = userData.lists?.private || [];
             setData(listData);
             setIsLoading(false);

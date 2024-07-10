@@ -8,9 +8,7 @@ import {
   collection,
   doc,
   getDocs,
-  query,
   updateDoc,
-  where,
 } from 'firebase/firestore';
 import { db } from '../App';
 import { SheetManager } from 'react-native-actions-sheet';
@@ -66,7 +64,6 @@ const useAddItem = (type: Props) => {
 
     const userRef = collection(db, 'users');
     const querySnapshot = await getDocs(userRef);
-    console.log('snaptshot log!!!!', querySnapshot);
     const user = querySnapshot.docs.find((doc) => {
       const data = doc;
       return data.id;
