@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import PrivateListScreenUI from './PrivateListScreenUI';
 import { ListItemType } from '../../constants/listItemType';
 import useAuth from '../../hooks/useAuth';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { arrayRemove, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../../App';
 
 const MemoizedPrivateListScreenUI = React.memo(PrivateListScreenUI);
@@ -14,10 +14,22 @@ const PrivateListScreenContainer = () => {
   const [isLoading, setIsLoading] = useState(true);
   console.log('currentUUUUSER', currentUser);
 
-  const deleteItem = useCallback((item: ListItemType) => {
-    console.log('item from delete item#######', item);
-  }, []);
+  const deleteItem = useCallback(
+    async (item: ListItemType) => {
+      if (!currentUser) return;
 
+      const userRef = doc(db, 'users', currentUser.uid);
+
+      try {
+        await updateDoc(userRef, {
+          'lists.private': arrayRemove(item),
+        });
+      } catch (error) {
+        console.error('Error deleting item:', error);
+      }
+    },
+    [currentUser]
+  );
   useEffect(() => {
     setError('');
     let unsub: () => void;
