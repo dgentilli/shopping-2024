@@ -59,7 +59,6 @@ const useAddItem = (type: Props) => {
   };
 
   const addPrivateItem = async () => {
-    console.log('add private item runs @#@#@#@#');
     if (!currentUser) {
       setFormError('You must be a registered user.');
       return;
@@ -78,7 +77,7 @@ const useAddItem = (type: Props) => {
       return;
     }
 
-    const updateRef = doc(db, 'users', user.id);
+    const updateRef = doc(db, 'users', currentUser.uid);
     await updateDoc(updateRef, {
       ['lists.private']: arrayUnion({
         id: uuidv4(),
