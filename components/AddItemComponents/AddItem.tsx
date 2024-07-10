@@ -26,7 +26,16 @@ const AddItem = (props: AddItemSheetProps) => {
     setIsDropdownOpen,
     setFormError,
     addHouseholdItem,
+    addPrivateItem,
   } = useAddItem({ type });
+
+  const onPressSave = () => {
+    if (type === 'private') {
+      return addPrivateItem();
+    } else {
+      return addHouseholdItem();
+    }
+  };
 
   return (
     <ActionSheet headerAlwaysVisible containerStyle={styles.container}>
@@ -71,7 +80,7 @@ const AddItem = (props: AddItemSheetProps) => {
         <Button
           type={ButtonTypes.PRIMARY}
           title='Save Item'
-          onPress={addHouseholdItem}
+          onPress={onPressSave}
         />
         <Spacer height={20} />
         <Link

@@ -8,7 +8,9 @@ import {
   collection,
   doc,
   getDocs,
+  query,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 import { db } from '../App';
 import { SheetManager } from 'react-native-actions-sheet';
@@ -39,7 +41,10 @@ const useAddItem = (type: Props) => {
       return data.householdData.userIds.includes(currentUser.uid);
     });
 
-    if (!userHousehold) return;
+    if (!userHousehold) {
+      setFormError('There was a problem. Please try again');
+      return;
+    }
 
     const updateRef = doc(db, 'households', userHousehold.id);
     await updateDoc(updateRef, {
@@ -50,6 +55,39 @@ const useAddItem = (type: Props) => {
         unitOfMeasure,
       }),
     });
+    SheetManager.hide('add-item-sheet');
+  };
+
+  const addPrivateItem = async () => {
+    console.log('add private item runs @#@#@#@#');
+    if (!currentUser) {
+      setFormError('You must be a registered user.');
+      return;
+    }
+
+    const userRef = collection(db, 'users');
+    const querySnapshot = await getDocs(userRef);
+    console.log('snaptshot log!!!!', querySnapshot);
+    const user = querySnapshot.docs.find((doc) => {
+      const data = doc;
+      return data.id;
+    });
+
+    if (!user) {
+      setFormError('There was a problem. Please try again');
+      return;
+    }
+
+    const updateRef = doc(db, 'users', user.id);
+    await updateDoc(updateRef, {
+      ['lists.private']: arrayUnion({
+        id: uuidv4(),
+        itemName,
+        itemQuantity,
+        unitOfMeasure,
+      }),
+    });
+
     SheetManager.hide('add-item-sheet');
   };
 
@@ -65,6 +103,7 @@ const useAddItem = (type: Props) => {
     setUnitOfMeasure,
     setFormError,
     addHouseholdItem,
+    addPrivateItem,
   };
 };
 

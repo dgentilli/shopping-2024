@@ -37,7 +37,6 @@ const List = (props: ListProps) => {
           <ListItem {...item} deleteItem={deleteItem} />
         )}
         ItemSeparatorComponent={() => <Divider />}
-        // ListEmptyComponent={() => <EmptyList />}
         style={{ backgroundColor: '#ffffff' }}
       />
     );
