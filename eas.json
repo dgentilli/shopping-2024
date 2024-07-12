@@ -15,6 +15,14 @@
         "buildType": "apk"
       }
     },
+    "testBuild002": {
+      "distribution": "internal",
+      "developmentClient": true,
+      "android": {
+        "gradleCommand": ":app:assembleRelease",
+        "buildType": "apk"
+      }
+    },
     "production": {}
   },
   "submit": {
