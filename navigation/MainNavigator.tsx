@@ -8,13 +8,17 @@ const MainNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name='MainTabs'
+        name='Main'
         component={BottomTabNavigator}
         options={{
           headerShown: false,
         }}
       />
-      <Stack.Screen name='PrivateList' component={PrivateListScreenContainer} />
+      <Stack.Screen
+        name='PrivateList'
+        component={PrivateListScreenContainer}
+        options={{ headerTintColor: '#6c63ff', headerBackTitle: 'Back' }}
+      />
     </Stack.Navigator>
   );
 };

@@ -26,6 +26,8 @@ const BottomTabNavigator = () => {
               color={color}
             />
           ),
+          headerTintColor: '#6c63ff',
+          headerTitleStyle: { fontWeight: '300', fontSize: 26 },
         }}
       />
       <Tab.Screen
@@ -39,6 +41,8 @@ const BottomTabNavigator = () => {
               color={color}
             />
           ),
+          headerTintColor: '#6c63ff',
+          headerTitleStyle: { fontWeight: '300', fontSize: 26 },
         }}
       />
       <Tab.Screen
@@ -52,6 +56,8 @@ const BottomTabNavigator = () => {
               color={color}
             />
           ),
+          headerTintColor: '#6c63ff',
+          headerTitleStyle: { fontWeight: '300', fontSize: 26 },
         }}
       />
     </Tab.Navigator>
